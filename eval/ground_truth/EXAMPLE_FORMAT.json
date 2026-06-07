@@ -1,0 +1,20 @@
+{
+  "_comment": "GT 라벨 파일 형식. 파일명은 이미지 stem과 동일하게. 예: test1.json → test1.jpeg",
+  "image_id": "test1",
+  "objects": [
+    {
+      "label": "bottle",
+      "bbox": [120, 80, 240, 360],
+      "_note": "bbox = [x1, y1, x2, y2] 픽셀 좌표 (좌상단, 우하단)"
+    },
+    {
+      "label": "book",
+      "bbox": [300, 50, 520, 200]
+    },
+    {
+      "label": "cable",
+      "bbox": [10, 400, 80, 430],
+      "_note": "소형 객체 예시 — 이미지 면적의 0.5% 이하면 small object로 분류"
+    }
+  ]
+}

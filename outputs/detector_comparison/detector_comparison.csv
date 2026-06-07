@@ -1,0 +1,4 @@
+﻿image,detector,pred_count
+test1.jpeg,yolo-world,48
+test2.jpeg,yolo-world,19
+test3.jpeg,yolo-world,46

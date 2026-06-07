@@ -18,7 +18,7 @@ OBJECT_CLASSES = [
 
     # 식기 / 음식
     "cup", "bottle", "mug", "plate", "bowl", "spoon",
-    "fork", "snack", "food wrapper",
+    "fork", "snack", "food wrapper", 
 
     # 의류 / 잡화
     "clothes", "shirt", "hoodie", "pants", "socks",
