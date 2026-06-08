@@ -4,6 +4,12 @@ describe=False  → OFF 경로 (대조군, P1)
 describe=True   → ON 경로  (처치군, P3 이후)
 """
 
+try:
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+except ImportError:
+    pass  # pillow-heif 미설치 시 HEIC 지원 비활성화
+
 import os
 import time
 import uuid

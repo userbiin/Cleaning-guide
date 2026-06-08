@@ -27,6 +27,7 @@ from app.config import (
 )
 from app.schemas import AnalyzeResponse, DetectedObject, Guide
 from models.detector import get_detector
+from models.describer import Florence2Describer
 from pipeline.orchestrator import run_pipeline
 
 STATIC_PATH = Path(STATIC_DIR)
@@ -45,7 +46,12 @@ async def lifespan(app: FastAPI):
         imgsz=IMGSZ,
         device=auto_device(),
     )
-    app.state.describer = None  # P3에서 Florence2Describer 주입 예정
+    try:
+        app.state.describer = Florence2Describer()
+        print("[startup] Florence-2 로드 완료")
+    except Exception as e:
+        print(f"[startup] Florence-2 로드 실패 — describe=ON 비활성화: {e}")
+        app.state.describer = None
     print("[startup] 모델 로드 완료")
     yield
     print("[shutdown] 종료")
