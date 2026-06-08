@@ -1,20 +1,26 @@
 {
-  "_comment": "GT 라벨 파일 형식. 파일명은 이미지 stem과 동일하게. 예: test1.json → test1.jpeg",
-  "image_id": "test1",
+  "_comment": "완성된 GT 파일 형식. 파일명 stem = 이미지 stem (예: img001.json ↔ img001.jpg). labeling_guide.md 참조.",
+  "image_id": "img001",
   "objects": [
     {
+      "id": 0,
       "label": "bottle",
       "bbox": [120, 80, 240, 360],
-      "_note": "bbox = [x1, y1, x2, y2] 픽셀 좌표 (좌상단, 우하단)"
+      "decision": "discard",
+      "_note": "bbox = [x1, y1, x2, y2] 픽셀 좌표"
     },
     {
+      "id": 1,
       "label": "book",
-      "bbox": [300, 50, 520, 200]
+      "bbox": [300, 50, 520, 200],
+      "decision": "relocate"
     },
     {
+      "id": 2,
       "label": "cable",
       "bbox": [10, 400, 80, 430],
-      "_note": "소형 객체 예시 — 이미지 면적의 0.5% 이하면 small object로 분류"
+      "decision": "relocate",
+      "_note": "소형 객체 — 이미지 면적 0.5% 이하 → small object Recall에 별도 집계"
     }
   ]
 }

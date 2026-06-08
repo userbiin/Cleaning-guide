@@ -1,0 +1,607 @@
+{
+  "_todo": true,
+  "_labeled": false,
+  "image_id": "test3",
+  "image_path": "test_images/test3.jpeg",
+  "objects": [
+    {
+      "id": 0,
+      "label": "keyboard",
+      "bbox": [
+        1341,
+        2202,
+        3999,
+        2993
+      ],
+      "decision": null,
+      "_conf": 0.635,
+      "_fp": false
+    },
+    {
+      "id": 1,
+      "label": "cup",
+      "bbox": [
+        1183,
+        1978,
+        1565,
+        2411
+      ],
+      "decision": null,
+      "_conf": 0.548,
+      "_fp": false
+    },
+    {
+      "id": 2,
+      "label": "mug",
+      "bbox": [
+        1185,
+        1979,
+        1563,
+        2410
+      ],
+      "decision": null,
+      "_conf": 0.502,
+      "_fp": false
+    },
+    {
+      "id": 3,
+      "label": "plastic bag",
+      "bbox": [
+        1458,
+        1800,
+        2243,
+        2182
+      ],
+      "decision": null,
+      "_conf": 0.461,
+      "_fp": false
+    },
+    {
+      "id": 4,
+      "label": "cup",
+      "bbox": [
+        749,
+        2104,
+        1032,
+        2412
+      ],
+      "decision": null,
+      "_conf": 0.449,
+      "_fp": false
+    },
+    {
+      "id": 5,
+      "label": "food wrapper",
+      "bbox": [
+        1449,
+        1796,
+        2241,
+        2184
+      ],
+      "decision": null,
+      "_conf": 0.427,
+      "_fp": false
+    },
+    {
+      "id": 6,
+      "label": "remote control",
+      "bbox": [
+        589,
+        2198,
+        835,
+        2558
+      ],
+      "decision": null,
+      "_conf": 0.308,
+      "_fp": false
+    },
+    {
+      "id": 7,
+      "label": "box",
+      "bbox": [
+        843,
+        1288,
+        1305,
+        1843
+      ],
+      "decision": null,
+      "_conf": 0.303,
+      "_fp": false
+    },
+    {
+      "id": 8,
+      "label": "toothbrush",
+      "bbox": [
+        640,
+        1723,
+        913,
+        2190
+      ],
+      "decision": null,
+      "_conf": 0.299,
+      "_fp": false
+    },
+    {
+      "id": 9,
+      "label": "bag",
+      "bbox": [
+        1311,
+        912,
+        2966,
+        2012
+      ],
+      "decision": null,
+      "_conf": 0.267,
+      "_fp": false
+    },
+    {
+      "id": 10,
+      "label": "eraser",
+      "bbox": [
+        409,
+        637,
+        632,
+        810
+      ],
+      "decision": null,
+      "_conf": 0.263,
+      "_fp": false
+    },
+    {
+      "id": 11,
+      "label": "eraser",
+      "bbox": [
+        641,
+        1724,
+        912,
+        2181
+      ],
+      "decision": null,
+      "_conf": 0.236,
+      "_fp": false
+    },
+    {
+      "id": 12,
+      "label": "box",
+      "bbox": [
+        2883,
+        1221,
+        3964,
+        2073
+      ],
+      "decision": null,
+      "_conf": 0.228,
+      "_fp": false
+    },
+    {
+      "id": 13,
+      "label": "box",
+      "bbox": [
+        1075,
+        270,
+        3079,
+        1349
+      ],
+      "decision": null,
+      "_conf": 0.225,
+      "_fp": false
+    },
+    {
+      "id": 14,
+      "label": "eraser",
+      "bbox": [
+        589,
+        2198,
+        837,
+        2554
+      ],
+      "decision": null,
+      "_conf": 0.216,
+      "_fp": false
+    },
+    {
+      "id": 15,
+      "label": "comb",
+      "bbox": [
+        313,
+        2005,
+        534,
+        2639
+      ],
+      "decision": null,
+      "_conf": 0.21,
+      "_fp": false
+    },
+    {
+      "id": 16,
+      "label": "bottle",
+      "bbox": [
+        865,
+        2225,
+        1039,
+        2466
+      ],
+      "decision": null,
+      "_conf": 0.201,
+      "_fp": false
+    },
+    {
+      "id": 17,
+      "label": "mug",
+      "bbox": [
+        355,
+        1450,
+        750,
+        2116
+      ],
+      "decision": null,
+      "_conf": 0.19,
+      "_fp": false
+    },
+    {
+      "id": 18,
+      "label": "notebook",
+      "bbox": [
+        2526,
+        651,
+        3581,
+        799
+      ],
+      "decision": null,
+      "_conf": 0.183,
+      "_fp": false
+    },
+    {
+      "id": 19,
+      "label": "pen",
+      "bbox": [
+        652,
+        1248,
+        783,
+        1585
+      ],
+      "decision": null,
+      "_conf": 0.178,
+      "_fp": false
+    },
+    {
+      "id": 20,
+      "label": "box",
+      "bbox": [
+        2527,
+        655,
+        3949,
+        1138
+      ],
+      "decision": null,
+      "_conf": 0.178,
+      "_fp": false
+    },
+    {
+      "id": 21,
+      "label": "cup",
+      "bbox": [
+        359,
+        1450,
+        752,
+        2116
+      ],
+      "decision": null,
+      "_conf": 0.172,
+      "_fp": false
+    },
+    {
+      "id": 22,
+      "label": "box",
+      "bbox": [
+        2531,
+        648,
+        3989,
+        2093
+      ],
+      "decision": null,
+      "_conf": 0.172,
+      "_fp": false
+    },
+    {
+      "id": 23,
+      "label": "pen",
+      "bbox": [
+        337,
+        1227,
+        505,
+        1600
+      ],
+      "decision": null,
+      "_conf": 0.169,
+      "_fp": false
+    },
+    {
+      "id": 24,
+      "label": "backpack",
+      "bbox": [
+        1313,
+        913,
+        2845,
+        1862
+      ],
+      "decision": null,
+      "_conf": 0.16,
+      "_fp": false
+    },
+    {
+      "id": 25,
+      "label": "box",
+      "bbox": [
+        1454,
+        2024,
+        2812,
+        2437
+      ],
+      "decision": null,
+      "_conf": 0.157,
+      "_fp": false
+    },
+    {
+      "id": 26,
+      "label": "box",
+      "bbox": [
+        1450,
+        1774,
+        2828,
+        2438
+      ],
+      "decision": null,
+      "_conf": 0.148,
+      "_fp": false
+    },
+    {
+      "id": 27,
+      "label": "cup",
+      "bbox": [
+        866,
+        2222,
+        1038,
+        2468
+      ],
+      "decision": null,
+      "_conf": 0.146,
+      "_fp": false
+    },
+    {
+      "id": 28,
+      "label": "spoon",
+      "bbox": [
+        157,
+        954,
+        505,
+        1578
+      ],
+      "decision": null,
+      "_conf": 0.144,
+      "_fp": false
+    },
+    {
+      "id": 29,
+      "label": "pencil",
+      "bbox": [
+        339,
+        1220,
+        506,
+        1599
+      ],
+      "decision": null,
+      "_conf": 0.143,
+      "_fp": false
+    },
+    {
+      "id": 30,
+      "label": "paper",
+      "bbox": [
+        3188,
+        1492,
+        3414,
+        1736
+      ],
+      "decision": null,
+      "_conf": 0.131,
+      "_fp": false
+    },
+    {
+      "id": 31,
+      "label": "spoon",
+      "bbox": [
+        650,
+        1250,
+        776,
+        1587
+      ],
+      "decision": null,
+      "_conf": 0.129,
+      "_fp": false
+    },
+    {
+      "id": 32,
+      "label": "toothbrush",
+      "bbox": [
+        397,
+        632,
+        653,
+        836
+      ],
+      "decision": null,
+      "_conf": 0.122,
+      "_fp": false
+    },
+    {
+      "id": 33,
+      "label": "eraser",
+      "bbox": [
+        866,
+        2224,
+        1036,
+        2466
+      ],
+      "decision": null,
+      "_conf": 0.119,
+      "_fp": false
+    },
+    {
+      "id": 34,
+      "label": "charger",
+      "bbox": [
+        2633,
+        459,
+        2841,
+        672
+      ],
+      "decision": null,
+      "_conf": 0.112,
+      "_fp": false
+    },
+    {
+      "id": 35,
+      "label": "plastic bag",
+      "bbox": [
+        2440,
+        1514,
+        2806,
+        2048
+      ],
+      "decision": null,
+      "_conf": 0.109,
+      "_fp": false
+    },
+    {
+      "id": 36,
+      "label": "notebook",
+      "bbox": [
+        3317,
+        948,
+        3577,
+        1039
+      ],
+      "decision": null,
+      "_conf": 0.109,
+      "_fp": false
+    },
+    {
+      "id": 37,
+      "label": "notebook",
+      "bbox": [
+        2485,
+        641,
+        3944,
+        983
+      ],
+      "decision": null,
+      "_conf": 0.107,
+      "_fp": false
+    },
+    {
+      "id": 38,
+      "label": "comb",
+      "bbox": [
+        652,
+        1724,
+        902,
+        2176
+      ],
+      "decision": null,
+      "_conf": 0.101,
+      "_fp": false
+    },
+    {
+      "id": 39,
+      "label": "tissue",
+      "bbox": [
+        362,
+        1458,
+        753,
+        2106
+      ],
+      "decision": null,
+      "_conf": 0.101,
+      "_fp": false
+    },
+    {
+      "id": 40,
+      "label": "bag",
+      "bbox": [
+        1315,
+        917,
+        2514,
+        1819
+      ],
+      "decision": null,
+      "_conf": 0.097,
+      "_fp": false
+    },
+    {
+      "id": 41,
+      "label": "pen",
+      "bbox": [
+        158,
+        954,
+        484,
+        1560
+      ],
+      "decision": null,
+      "_conf": 0.096,
+      "_fp": false
+    },
+    {
+      "id": 42,
+      "label": "notebook",
+      "bbox": [
+        3163,
+        873,
+        4000,
+        1105
+      ],
+      "decision": null,
+      "_conf": 0.092,
+      "_fp": false
+    },
+    {
+      "id": 43,
+      "label": "keyboard",
+      "bbox": [
+        440,
+        2400,
+        3713,
+        2993
+      ],
+      "decision": null,
+      "_conf": 0.088,
+      "_fp": false
+    },
+    {
+      "id": 44,
+      "label": "backpack",
+      "bbox": [
+        1617,
+        913,
+        2610,
+        1308
+      ],
+      "decision": null,
+      "_conf": 0.085,
+      "_fp": false
+    },
+    {
+      "id": 45,
+      "label": "toothbrush",
+      "bbox": [
+        643,
+        1720,
+        1022,
+        2410
+      ],
+      "decision": null,
+      "_conf": 0.085,
+      "_fp": false
+    }
+  ],
+  "missed_objects": []
+}

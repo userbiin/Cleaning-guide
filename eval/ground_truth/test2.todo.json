@@ -1,0 +1,256 @@
+{
+  "_todo": true,
+  "_labeled": false,
+  "image_id": "test2",
+  "image_path": "test_images/test2.jpeg",
+  "objects": [
+    {
+      "id": 0,
+      "label": "backpack",
+      "bbox": [
+        2970,
+        1677,
+        3623,
+        2992
+      ],
+      "decision": null,
+      "_conf": 0.247,
+      "_fp": false
+    },
+    {
+      "id": 1,
+      "label": "bag",
+      "bbox": [
+        2359,
+        1981,
+        2817,
+        2983
+      ],
+      "decision": null,
+      "_conf": 0.182,
+      "_fp": false
+    },
+    {
+      "id": 2,
+      "label": "box",
+      "bbox": [
+        189,
+        2027,
+        978,
+        2995
+      ],
+      "decision": null,
+      "_conf": 0.157,
+      "_fp": false
+    },
+    {
+      "id": 3,
+      "label": "clothes",
+      "bbox": [
+        822,
+        68,
+        3979,
+        2772
+      ],
+      "decision": null,
+      "_conf": 0.156,
+      "_fp": false
+    },
+    {
+      "id": 4,
+      "label": "backpack",
+      "bbox": [
+        2352,
+        1986,
+        2815,
+        2990
+      ],
+      "decision": null,
+      "_conf": 0.147,
+      "_fp": false
+    },
+    {
+      "id": 5,
+      "label": "bag",
+      "bbox": [
+        2751,
+        2609,
+        3340,
+        2996
+      ],
+      "decision": null,
+      "_conf": 0.142,
+      "_fp": false
+    },
+    {
+      "id": 6,
+      "label": "charger",
+      "bbox": [
+        2828,
+        1508,
+        3045,
+        2111
+      ],
+      "decision": null,
+      "_conf": 0.136,
+      "_fp": false
+    },
+    {
+      "id": 7,
+      "label": "bag",
+      "bbox": [
+        186,
+        2026,
+        978,
+        2994
+      ],
+      "decision": null,
+      "_conf": 0.118,
+      "_fp": false
+    },
+    {
+      "id": 8,
+      "label": "box",
+      "bbox": [
+        3573,
+        2789,
+        3999,
+        2997
+      ],
+      "decision": null,
+      "_conf": 0.118,
+      "_fp": false
+    },
+    {
+      "id": 9,
+      "label": "backpack",
+      "bbox": [
+        2922,
+        1670,
+        3902,
+        2989
+      ],
+      "decision": null,
+      "_conf": 0.112,
+      "_fp": false
+    },
+    {
+      "id": 10,
+      "label": "bag",
+      "bbox": [
+        1680,
+        138,
+        2213,
+        473
+      ],
+      "decision": null,
+      "_conf": 0.111,
+      "_fp": false
+    },
+    {
+      "id": 11,
+      "label": "plastic bag",
+      "bbox": [
+        305,
+        1462,
+        461,
+        1624
+      ],
+      "decision": null,
+      "_conf": 0.106,
+      "_fp": false
+    },
+    {
+      "id": 12,
+      "label": "plastic bag",
+      "bbox": [
+        3380,
+        812,
+        3632,
+        1002
+      ],
+      "decision": null,
+      "_conf": 0.097,
+      "_fp": false
+    },
+    {
+      "id": 13,
+      "label": "earphones",
+      "bbox": [
+        2826,
+        1512,
+        3048,
+        2109
+      ],
+      "decision": null,
+      "_conf": 0.096,
+      "_fp": false
+    },
+    {
+      "id": 14,
+      "label": "bag",
+      "bbox": [
+        3204,
+        952,
+        3673,
+        1575
+      ],
+      "decision": null,
+      "_conf": 0.095,
+      "_fp": false
+    },
+    {
+      "id": 15,
+      "label": "cosmetics",
+      "bbox": [
+        16,
+        162,
+        3016,
+        2770
+      ],
+      "decision": null,
+      "_conf": 0.095,
+      "_fp": false
+    },
+    {
+      "id": 16,
+      "label": "bottle",
+      "bbox": [
+        254,
+        452,
+        542,
+        596
+      ],
+      "decision": null,
+      "_conf": 0.09,
+      "_fp": false
+    },
+    {
+      "id": 17,
+      "label": "cup",
+      "bbox": [
+        90,
+        1643,
+        182,
+        1733
+      ],
+      "decision": null,
+      "_conf": 0.086,
+      "_fp": false
+    },
+    {
+      "id": 18,
+      "label": "toy",
+      "bbox": [
+        3378,
+        811,
+        3643,
+        1003
+      ],
+      "decision": null,
+      "_conf": 0.084,
+      "_fp": false
+    }
+  ],
+  "missed_objects": []
+}

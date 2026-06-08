@@ -1,10 +1,10 @@
 """
-Base detector selection — zero-shot recall comparison.
+Base detector selection — zero-shot 탐지 성능 비교 (v3 CV 코어 지표).
 
 [GT 없이: 정성적 비교]
   python eval/compare_detectors.py --images test_images --detectors yolo-world
 
-[GT 있을 때: Recall / Precision / Small-Object Recall 정량 비교]
+[GT 있을 때: mAP@0.5 / mAP@0.5:0.95 / Recall / Small-Object 정량 비교]
   python eval/compare_detectors.py \\
       --images eval/data/dev \\
       --gt eval/ground_truth \\
@@ -15,10 +15,11 @@ GT JSON 형식 (eval/ground_truth/<stem>.json):
   {
     "image_id": "img001",
     "objects": [
-      {"label": "bottle", "bbox": [x1, y1, x2, y2]},
+      {"label": "bottle", "bbox": [x1, y1, x2, y2], "decision": "discard"},
       ...
     ]
   }
+  decision="invalid" 객체는 오탐(FP)으로 탐지 지표 계산에서 제외됨.
 """
 
 import argparse
@@ -34,6 +35,7 @@ import pandas as pd
 _ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_ROOT))
 from models.detector import get_detector
+from eval.metrics import compute_map, compute_map_range
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".heic", ".webp"}
 
@@ -150,6 +152,10 @@ def run_comparison(image_dir: Path, detector_names: list[str],
         print("[ERROR] 사용 가능한 탐지기가 없습니다."); return
 
     rows = []
+    # mAP 계산용: 이미지 전체에 걸쳐 pred/gt 축적
+    all_preds_acc: dict[str, dict[str, list]] = {n: {} for n in detectors}
+    all_gts_acc:   dict[str, list[dict]] = {}
+
     for img_path in image_paths:
         img_cv = cv2.imread(str(img_path))
         if img_cv is None:
@@ -158,10 +164,16 @@ def run_comparison(image_dir: Path, detector_names: list[str],
         img_area = h * w
         small_thr_px = img_area * SMALL_OBJ_RATIO
 
-        gt_objs = gt_map.get(img_path.stem, []) if has_gt else []
+        gt_objs_all = gt_map.get(img_path.stem, []) if has_gt else []
+        # "invalid" GT 제외 후 탐지 지표 계산에 사용
+        gt_objs = [o for o in gt_objs_all if o.get("decision") != "invalid"]
+
+        if gt_objs_all:
+            all_gts_acc[img_path.stem] = gt_objs  # invalid 제외 버전 저장
 
         for det_name, detector in detectors.items():
             preds = detector.detect(str(img_path))
+            all_preds_acc[det_name][img_path.stem] = preds  # mAP용 축적
 
             _annotate(
                 str(img_path), preds, gt_objs if gt_objs else None,
@@ -219,7 +231,41 @@ def run_comparison(image_dir: Path, detector_names: list[str],
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\n상세 결과: {csv_path}")
 
-    # 탐지기별 요약
+    # ── mAP 계산 (GT 있을 때) ──────────────────────────────────────────────────
+    map_rows = []
+    if has_gt and all_gts_acc:
+        print("\nmAP 계산 중...")
+        for det_name in detectors:
+            preds_this = all_preds_acc[det_name]
+            m50_result  = compute_map(preds_this, all_gts_acc, iou_thr=0.5)
+            m5095       = compute_map_range(preds_this, all_gts_acc)
+            small_map   = m50_result.get("small_mAP")
+            map_rows.append({
+                "detector":        det_name,
+                "mAP@0.5":         m50_result["mAP"],
+                "mAP@0.5:0.95":    m5095,
+                "small_mAP@0.5":   small_map if small_map is not None else float("nan"),
+            })
+            print(f"  [{det_name}]  mAP@0.5={m50_result['mAP']:.4f}  "
+                  f"mAP@0.5:0.95={m5095:.4f}"
+                  + (f"  small_mAP={small_map:.4f}" if small_map else ""))
+
+            # 클래스별 AP 저장
+            ap_path = output_dir / f"{det_name}_per_class_ap.json"
+            import json as _json
+            ap_path.write_text(
+                _json.dumps(m50_result["per_class"], ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+
+        map_df = pd.DataFrame(map_rows).set_index("detector")
+        map_csv = output_dir / "map_summary.csv"
+        map_df.to_csv(map_csv, encoding="utf-8-sig")
+        print(f"\nmAP 요약: {map_csv}")
+    else:
+        map_df = None
+
+    # ── 탐지기별 요약 출력 ────────────────────────────────────────────────────
     print("\n" + "=" * 60)
     if has_gt and "recall" in df.columns:
         metric_cols = [c for c in ["recall", "precision", "small_recall", "tp", "fp", "fn"]
@@ -228,10 +274,13 @@ def run_comparison(image_dir: Path, detector_names: list[str],
         summary_path = output_dir / "summary.csv"
         summary.to_csv(summary_path, encoding="utf-8-sig")
 
-        print("탐지기별 평균 (전체 이미지)")
+        print("탐지기별 평균 — per-image greedy (recall/precision)")
         print(summary.to_string())
+        if map_df is not None:
+            print("\n탐지기별 mAP (전체 이미지 통합, COCO-style)")
+            print(map_df.round(4).to_string())
         print(f"\n요약: {summary_path}")
-        _print_winner(summary)
+        _print_winner(summary, map_df)
     else:
         print("탐지기별 탐지 수 통계 (GT 없음)")
         print(df.groupby("detector")["pred_count"].describe().round(1).to_string())
@@ -239,17 +288,20 @@ def run_comparison(image_dir: Path, detector_names: list[str],
     print(f"\n어노테이션 이미지: {output_dir}")
 
 
-def _print_winner(summary: pd.DataFrame) -> None:
-    """Recall 기준 최우수 탐지기 출력."""
-    if "recall" not in summary.columns or summary.empty:
-        return
-    best = summary["recall"].idxmax()
-    print(f"\n★ Recall 기준 추천 base detector: [{best}]"
-          f"  recall={summary.loc[best,'recall']:.3f}")
-    if "small_recall" in summary.columns:
-        best_small = summary["small_recall"].idxmax()
-        print(f"  소형 객체 Recall 최고: [{best_small}]"
-              f"  small_recall={summary.loc[best_small,'small_recall']:.3f}")
+def _print_winner(summary: pd.DataFrame, map_df: "pd.DataFrame | None" = None) -> None:
+    """mAP@0.5 기준 최우수 탐지기 출력 (v3 CV 코어 지표)."""
+    if map_df is not None and not map_df.empty and "mAP@0.5" in map_df.columns:
+        best = map_df["mAP@0.5"].idxmax()
+        print(f"\n★ mAP@0.5 기준 추천 base detector: [{best}]"
+              f"  mAP@0.5={map_df.loc[best,'mAP@0.5']:.4f}"
+              f"  mAP@0.5:0.95={map_df.loc[best,'mAP@0.5:0.95']:.4f}")
+        if "small_mAP@0.5" in map_df.columns:
+            best_small = map_df["small_mAP@0.5"].idxmax()
+            print(f"  소형 객체 mAP 최고: [{best_small}]"
+                  f"  small_mAP={map_df.loc[best_small,'small_mAP@0.5']:.4f}")
+    elif "recall" in summary.columns and not summary.empty:
+        best = summary["recall"].idxmax()
+        print(f"\n★ Recall 기준 추천: [{best}]  recall={summary.loc[best,'recall']:.3f}")
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────

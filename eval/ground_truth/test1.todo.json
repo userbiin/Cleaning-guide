@@ -1,0 +1,633 @@
+{
+  "_todo": true,
+  "_labeled": false,
+  "image_id": "test1",
+  "image_path": "test_images/test1.jpeg",
+  "objects": [
+    {
+      "id": 0,
+      "label": "bottle",
+      "bbox": [
+        1899,
+        1039,
+        2274,
+        1824
+      ],
+      "decision": null,
+      "_conf": 0.63,
+      "_fp": false
+    },
+    {
+      "id": 1,
+      "label": "book",
+      "bbox": [
+        217,
+        1930,
+        1887,
+        2990
+      ],
+      "decision": null,
+      "_conf": 0.613,
+      "_fp": false
+    },
+    {
+      "id": 2,
+      "label": "plastic bag",
+      "bbox": [
+        2362,
+        1599,
+        2724,
+        2265
+      ],
+      "decision": null,
+      "_conf": 0.491,
+      "_fp": false
+    },
+    {
+      "id": 3,
+      "label": "bag",
+      "bbox": [
+        252,
+        791,
+        1355,
+        1917
+      ],
+      "decision": null,
+      "_conf": 0.464,
+      "_fp": false
+    },
+    {
+      "id": 4,
+      "label": "book",
+      "bbox": [
+        1816,
+        1897,
+        2389,
+        2536
+      ],
+      "decision": null,
+      "_conf": 0.423,
+      "_fp": false
+    },
+    {
+      "id": 5,
+      "label": "notebook",
+      "bbox": [
+        215,
+        1936,
+        1884,
+        2992
+      ],
+      "decision": null,
+      "_conf": 0.405,
+      "_fp": false
+    },
+    {
+      "id": 6,
+      "label": "ruler",
+      "bbox": [
+        1977,
+        2048,
+        2247,
+        2531
+      ],
+      "decision": null,
+      "_conf": 0.375,
+      "_fp": false
+    },
+    {
+      "id": 7,
+      "label": "paper",
+      "bbox": [
+        316,
+        964,
+        965,
+        1291
+      ],
+      "decision": null,
+      "_conf": 0.364,
+      "_fp": false
+    },
+    {
+      "id": 8,
+      "label": "pencil",
+      "bbox": [
+        1980,
+        2051,
+        2245,
+        2530
+      ],
+      "decision": null,
+      "_conf": 0.358,
+      "_fp": false
+    },
+    {
+      "id": 9,
+      "label": "book",
+      "bbox": [
+        2572,
+        1089,
+        3656,
+        1399
+      ],
+      "decision": null,
+      "_conf": 0.353,
+      "_fp": false
+    },
+    {
+      "id": 10,
+      "label": "mug",
+      "bbox": [
+        2612,
+        741,
+        2930,
+        1095
+      ],
+      "decision": null,
+      "_conf": 0.343,
+      "_fp": false
+    },
+    {
+      "id": 11,
+      "label": "cup",
+      "bbox": [
+        2613,
+        741,
+        2929,
+        1095
+      ],
+      "decision": null,
+      "_conf": 0.332,
+      "_fp": false
+    },
+    {
+      "id": 12,
+      "label": "document",
+      "bbox": [
+        1224,
+        819,
+        1889,
+        1216
+      ],
+      "decision": null,
+      "_conf": 0.297,
+      "_fp": false
+    },
+    {
+      "id": 13,
+      "label": "notebook",
+      "bbox": [
+        1821,
+        1898,
+        2387,
+        2544
+      ],
+      "decision": null,
+      "_conf": 0.277,
+      "_fp": false
+    },
+    {
+      "id": 14,
+      "label": "notebook",
+      "bbox": [
+        257,
+        798,
+        1348,
+        1917
+      ],
+      "decision": null,
+      "_conf": 0.273,
+      "_fp": false
+    },
+    {
+      "id": 15,
+      "label": "plastic bag",
+      "bbox": [
+        0,
+        356,
+        240,
+        868
+      ],
+      "decision": null,
+      "_conf": 0.253,
+      "_fp": false
+    },
+    {
+      "id": 16,
+      "label": "tissue",
+      "bbox": [
+        2363,
+        1990,
+        2601,
+        2262
+      ],
+      "decision": null,
+      "_conf": 0.248,
+      "_fp": false
+    },
+    {
+      "id": 17,
+      "label": "cosmetics",
+      "bbox": [
+        548,
+        703,
+        3898,
+        2993
+      ],
+      "decision": null,
+      "_conf": 0.247,
+      "_fp": false
+    },
+    {
+      "id": 18,
+      "label": "tablet",
+      "bbox": [
+        0,
+        2242,
+        148,
+        2934
+      ],
+      "decision": null,
+      "_conf": 0.245,
+      "_fp": false
+    },
+    {
+      "id": 19,
+      "label": "bag",
+      "bbox": [
+        0,
+        356,
+        239,
+        885
+      ],
+      "decision": null,
+      "_conf": 0.238,
+      "_fp": false
+    },
+    {
+      "id": 20,
+      "label": "tissue",
+      "bbox": [
+        2446,
+        1593,
+        2729,
+        2047
+      ],
+      "decision": null,
+      "_conf": 0.237,
+      "_fp": false
+    },
+    {
+      "id": 21,
+      "label": "paper",
+      "bbox": [
+        1307,
+        1095,
+        2006,
+        1589
+      ],
+      "decision": null,
+      "_conf": 0.229,
+      "_fp": false
+    },
+    {
+      "id": 22,
+      "label": "eraser",
+      "bbox": [
+        3120,
+        1054,
+        3311,
+        1267
+      ],
+      "decision": null,
+      "_conf": 0.224,
+      "_fp": false
+    },
+    {
+      "id": 23,
+      "label": "book",
+      "bbox": [
+        1547,
+        1478,
+        1989,
+        2042
+      ],
+      "decision": null,
+      "_conf": 0.221,
+      "_fp": false
+    },
+    {
+      "id": 24,
+      "label": "pen",
+      "bbox": [
+        1981,
+        2050,
+        2245,
+        2533
+      ],
+      "decision": null,
+      "_conf": 0.212,
+      "_fp": false
+    },
+    {
+      "id": 25,
+      "label": "paper",
+      "bbox": [
+        387,
+        1918,
+        1278,
+        2751
+      ],
+      "decision": null,
+      "_conf": 0.209,
+      "_fp": false
+    },
+    {
+      "id": 26,
+      "label": "book",
+      "bbox": [
+        0,
+        2261,
+        152,
+        2932
+      ],
+      "decision": null,
+      "_conf": 0.196,
+      "_fp": false
+    },
+    {
+      "id": 27,
+      "label": "notebook",
+      "bbox": [
+        1306,
+        1095,
+        2003,
+        1587
+      ],
+      "decision": null,
+      "_conf": 0.196,
+      "_fp": false
+    },
+    {
+      "id": 28,
+      "label": "book",
+      "bbox": [
+        2571,
+        825,
+        3653,
+        1402
+      ],
+      "decision": null,
+      "_conf": 0.195,
+      "_fp": false
+    },
+    {
+      "id": 29,
+      "label": "cosmetics",
+      "bbox": [
+        2,
+        666,
+        3204,
+        3000
+      ],
+      "decision": null,
+      "_conf": 0.165,
+      "_fp": false
+    },
+    {
+      "id": 30,
+      "label": "cable",
+      "bbox": [
+        1003,
+        1671,
+        1611,
+        2004
+      ],
+      "decision": null,
+      "_conf": 0.164,
+      "_fp": false
+    },
+    {
+      "id": 31,
+      "label": "plastic bag",
+      "bbox": [
+        2357,
+        1974,
+        2608,
+        2268
+      ],
+      "decision": null,
+      "_conf": 0.143,
+      "_fp": false
+    },
+    {
+      "id": 32,
+      "label": "tissue",
+      "bbox": [
+        2356,
+        1595,
+        2725,
+        2265
+      ],
+      "decision": null,
+      "_conf": 0.124,
+      "_fp": false
+    },
+    {
+      "id": 33,
+      "label": "remote control",
+      "bbox": [
+        2641,
+        1108,
+        3654,
+        1396
+      ],
+      "decision": null,
+      "_conf": 0.119,
+      "_fp": false
+    },
+    {
+      "id": 34,
+      "label": "notebook",
+      "bbox": [
+        0,
+        2148,
+        156,
+        2956
+      ],
+      "decision": null,
+      "_conf": 0.116,
+      "_fp": false
+    },
+    {
+      "id": 35,
+      "label": "toy",
+      "bbox": [
+        2365,
+        351,
+        2663,
+        686
+      ],
+      "decision": null,
+      "_conf": 0.111,
+      "_fp": false
+    },
+    {
+      "id": 36,
+      "label": "food wrapper",
+      "bbox": [
+        2912,
+        831,
+        3515,
+        1137
+      ],
+      "decision": null,
+      "_conf": 0.106,
+      "_fp": false
+    },
+    {
+      "id": 37,
+      "label": "earphones",
+      "bbox": [
+        647,
+        1410,
+        1065,
+        1884
+      ],
+      "decision": null,
+      "_conf": 0.103,
+      "_fp": false
+    },
+    {
+      "id": 38,
+      "label": "charger",
+      "bbox": [
+        426,
+        1393,
+        1348,
+        1915
+      ],
+      "decision": null,
+      "_conf": 0.102,
+      "_fp": false
+    },
+    {
+      "id": 39,
+      "label": "earphones",
+      "bbox": [
+        469,
+        1407,
+        1066,
+        1886
+      ],
+      "decision": null,
+      "_conf": 0.098,
+      "_fp": false
+    },
+    {
+      "id": 40,
+      "label": "box",
+      "bbox": [
+        1897,
+        356,
+        2668,
+        700
+      ],
+      "decision": null,
+      "_conf": 0.095,
+      "_fp": false
+    },
+    {
+      "id": 41,
+      "label": "notebook",
+      "bbox": [
+        0,
+        2316,
+        137,
+        2780
+      ],
+      "decision": null,
+      "_conf": 0.094,
+      "_fp": false
+    },
+    {
+      "id": 42,
+      "label": "paper",
+      "bbox": [
+        2911,
+        829,
+        3517,
+        1152
+      ],
+      "decision": null,
+      "_conf": 0.091,
+      "_fp": false
+    },
+    {
+      "id": 43,
+      "label": "eraser",
+      "bbox": [
+        2859,
+        1071,
+        3031,
+        1258
+      ],
+      "decision": null,
+      "_conf": 0.089,
+      "_fp": false
+    },
+    {
+      "id": 44,
+      "label": "cable",
+      "bbox": [
+        769,
+        1670,
+        1605,
+        2011
+      ],
+      "decision": null,
+      "_conf": 0.084,
+      "_fp": false
+    },
+    {
+      "id": 45,
+      "label": "scissors",
+      "bbox": [
+        2383,
+        696,
+        3132,
+        2985
+      ],
+      "decision": null,
+      "_conf": 0.084,
+      "_fp": false
+    },
+    {
+      "id": 46,
+      "label": "toy",
+      "bbox": [
+        1962,
+        352,
+        2664,
+        699
+      ],
+      "decision": null,
+      "_conf": 0.082,
+      "_fp": false
+    },
+    {
+      "id": 47,
+      "label": "cable",
+      "bbox": [
+        2578,
+        1077,
+        3032,
+        1513
+      ],
+      "decision": null,
+      "_conf": 0.081,
+      "_fp": false
+    }
+  ],
+  "missed_objects": []
+}

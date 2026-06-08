@@ -1,0 +1,26 @@
+# 추론 파이프라인
+fastapi>=0.111
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+pydantic>=2.7
+
+# 탐지 / 이미지
+ultralytics>=8.2
+opencv-python-headless>=4.9
+pillow>=10.3
+pillow-heif>=0.16        # HEIC 지원
+
+# LLM
+openai>=1.30
+
+# Florence-2 (P2)
+transformers>=4.40
+torch>=2.2
+einops
+timm
+
+# 평가 / 통계 (P5)
+pandas>=2.2
+scipy>=1.13
+scikit-learn>=1.4        # Cohen's kappa
+numpy>=1.26
