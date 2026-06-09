@@ -4,7 +4,7 @@ import pandas as pd
 from ultralytics import YOLO
 
 
-DEFAULT_LLM_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
+DEFAULT_LLM_MODEL = os.getenv("CLAUDE_MODEL", "claude-haiku-4-5-20251001")
 
 
 OBJECT_CLASSES = [
@@ -220,26 +220,29 @@ def build_llm_prompt(df: pd.DataFrame) -> str:
 
 
 def ask_openai_for_recommendation(prompt: str, model: str = DEFAULT_LLM_MODEL) -> str:
-    if not os.getenv("ANTHROPIC_API_KEY"):
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
         raise RuntimeError(
-            "OPENAI_API_KEY 환경변수가 없습니다. "
-            "예: export OPENAI_API_KEY='your_api_key_here'"
+            "ANTHROPIC_API_KEY 환경변수가 없습니다. "
+            "예: export ANTHROPIC_API_KEY='your_api_key_here'"
         )
 
-    from openai import OpenAI
+    from anthropic import Anthropic
 
-    client = OpenAI()
-    response = client.responses.create(
+    client = Anthropic(api_key=api_key)
+    response = client.messages.create(
         model=model,
-        instructions=(
+        max_tokens=1024,
+        temperature=0,
+        system=(
             "너는 한국어로 답하는 실내 정리 컨설턴트다. "
             "객체 탐지 결과에는 오탐이 섞일 수 있으므로, 확신하지 못하는 물건은 단정하지 말고 "
             "사용자가 바로 실행할 수 있는 짧고 구체적인 순서로 제안한다."
         ),
-        input=prompt,
+        messages=[{"role": "user", "content": prompt}],
     )
 
-    return response.output_text.strip()
+    return response.content[0].text.strip()
 
 
 def save_llm_recommendation(
