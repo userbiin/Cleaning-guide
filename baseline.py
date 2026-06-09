@@ -220,7 +220,7 @@ def build_llm_prompt(df: pd.DataFrame) -> str:
 
 
 def ask_openai_for_recommendation(prompt: str, model: str = DEFAULT_LLM_MODEL) -> str:
-    if not os.getenv("OPENAI_API_KEY"):
+    if not os.getenv("ANTHROPIC_API_KEY"):
         raise RuntimeError(
             "OPENAI_API_KEY 환경변수가 없습니다. "
             "예: export OPENAI_API_KEY='your_api_key_here'"

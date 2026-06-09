@@ -5,7 +5,7 @@ FastAPI 백엔드 — POST /analyze
   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 환경변수:
-  OPENAI_API_KEY   LLM 호출 (없으면 탐지·카테고리까지만 동작)
+  ANTHROPIC_API_KEY  LLM 호출 (없으면 탐지·카테고리까지만 동작)
   MODEL_PATH       yolov8s-world.pt (기본)
   DETECTOR         yolo-world | yoloe (기본: yolo-world)
   CONF             탐지 threshold (기본: 0.08)
@@ -70,7 +70,7 @@ async def health(request: Request):
         "status": "ok",
         "detector": DETECTOR_NAME,
         "device": auto_device(),
-        "llm": "enabled" if os.getenv("OPENAI_API_KEY") else "disabled (no API key)",
+        "llm": "enabled" if os.getenv("ANTHROPIC_API_KEY") else "disabled (no API key)",
     }
 
 

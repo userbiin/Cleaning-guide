@@ -149,7 +149,7 @@ def run_pipeline(
             summary = (f"총 {len(objects)}개 물건 탐지. "
                        f"버릴 것 {discard_cnt}개, 옮길 것 {relocate_cnt}개.")
         else:
-            summary = f"총 {len(objects)}개 물건 탐지 (LLM 미호출 — OPENAI_API_KEY 확인)."
+            summary = f"총 {len(objects)}개 물건 탐지 (LLM 미호출 — ANTHROPIC_API_KEY 확인)."
 
     # 5. 어노테이션 저장
     annotated_url = _annotate_and_save(bgr, objects, image_id)

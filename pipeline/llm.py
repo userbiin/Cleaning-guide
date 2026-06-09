@@ -1,5 +1,5 @@
 """
-LLM 프롬프트 빌더 + OpenAI 호출.
+LLM 프롬프트 빌더 + Anthropic Claude 호출.
 
 v2.md §3 공정성 원칙:
   OFF와 ON의 유일한 차이는 description + state 두 줄.
@@ -8,9 +8,10 @@ v2.md §3 공정성 원칙:
 
 import json
 import os
+import re
 from collections import defaultdict
 
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-haiku-4-5-20251001")
 
 _SYSTEM_INSTRUCTION = """너는 실내 정리 컨설턴트다. 아래 탐지된 물건 각각에 대해
 discard / relocate / keep 중 하나를 판정하라.
@@ -66,24 +67,29 @@ def build_prompt(objects: list[dict], describe: bool) -> str:
 
 def ask_llm(prompt: str) -> dict | None:
     """
-    OpenAI API 호출 → {"decisions": [...], "guide": {...}} 반환.
-    OPENAI_API_KEY 없으면 None 반환 (파이프라인은 계속 동작).
+    Anthropic Claude API 호출 → {"decisions": [...], "guide": {...}} 반환.
+    ANTHROPIC_API_KEY 없으면 None 반환 (파이프라인은 계속 동작).
     """
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         return None
 
-    from openai import OpenAI
-    client = OpenAI(api_key=api_key)
+    from anthropic import Anthropic
+    client = Anthropic(api_key=api_key)
 
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role": "user", "content": prompt}],
+    response = client.messages.create(
+        model=CLAUDE_MODEL,
+        max_tokens=1024,
         temperature=0,
-        response_format={"type": "json_object"},
+        messages=[{"role": "user", "content": prompt}],
     )
-    raw = response.choices[0].message.content.strip()
+    raw = response.content[0].text.strip()
+
+    # 마크다운 코드블록(```json ... ```) 또는 순수 JSON 모두 처리
+    match = re.search(r"\{.*\}", raw, re.DOTALL)
+    if not match:
+        return None
     try:
-        return json.loads(raw)
+        return json.loads(match.group())
     except json.JSONDecodeError:
         return None

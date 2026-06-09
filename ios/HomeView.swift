@@ -10,6 +10,11 @@ struct HomeView: View {
     // MARK: - State
     @State private var pickerItem: PhotosPickerItem?
     @State private var vm: HomeViewModel
+    @State private var showCamera = false
+
+    private var isCameraAvailable: Bool {
+        UIImagePickerController.isSourceTypeAvailable(.camera)
+    }
 
     // MARK: - Init (ViewModel 주입 지원 → Preview/테스트에서 Mock 사용 가능)
     init(viewModel: HomeViewModel = HomeViewModel()) {
@@ -41,6 +46,10 @@ struct HomeView: View {
                     }
             }
         }
+        .sheet(isPresented: $showCamera) {
+            CameraCapture(capturedImage: $vm.selectedImage)
+                .ignoresSafeArea()
+        }
         .alert("오류", isPresented: Binding(
             get: { vm.errorMessage != nil },
             set: { if !$0 { vm.errorMessage = nil } }
@@ -68,13 +77,28 @@ struct HomeView: View {
     }
 
     private var imagePickerSection: some View {
-        PhotosPicker(selection: $pickerItem, matching: .images) {
-            pickerLabel
+        VStack(spacing: 8) {
+            PhotosPicker(selection: $pickerItem, matching: .images) {
+                pickerLabel
+            }
+            .onChange(of: pickerItem) { _, item in
+                Task { await vm.loadImage(from: item) }
+            }
+
+            if isCameraAvailable {
+                Button {
+                    showCamera = true
+                } label: {
+                    Label("카메라로 직접 찍기", systemImage: "camera.fill")
+                        .font(.subheadline.weight(.medium))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                }
+                .buttonStyle(.bordered)
+                .tint(.blue)
+            }
         }
         .padding(.horizontal)
-        .onChange(of: pickerItem) { _, item in
-            Task { await vm.loadImage(from: item) }
-        }
     }
 
     @ViewBuilder
@@ -117,11 +141,36 @@ struct HomeView: View {
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
 
-            TextField("http://100.x.x.x:8000", text: $serverURL)
-                .textFieldStyle(.roundedBorder)
-                .autocorrectionDisabled()
-                .textInputAutocapitalization(.never)
-                .keyboardType(.URL)
+            HStack(spacing: 8) {
+                TextField("https://xxxx-8000.app.github.dev", text: $serverURL)
+                    .textFieldStyle(.roundedBorder)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.URL)
+
+                Button {
+                    Task { await vm.checkHealth(serverURL: serverURL) }
+                } label: {
+                    Image(systemName: "antenna.radiowaves.left.and.right")
+                        .font(.body)
+                }
+                .buttonStyle(.bordered)
+                .tint(vm.serverStatus.dotColor)
+            }
+
+            // 연결 상태 표시
+            HStack(spacing: 5) {
+                if case .checking = vm.serverStatus {
+                    ProgressView().scaleEffect(0.7)
+                } else {
+                    Circle()
+                        .fill(vm.serverStatus.dotColor)
+                        .frame(width: 7, height: 7)
+                }
+                Text(vm.serverStatus.label)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             Divider()
 
