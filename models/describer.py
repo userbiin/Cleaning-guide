@@ -36,31 +36,42 @@ class Florence2Describer:
         max_new_tokens: int = 512,
         num_beams: int = 3,
     ) -> None:
-        from transformers import AutoModelForCausalLM, AutoProcessor
+        from transformers import AutoModelForCausalLM, AutoProcessor, AutoConfig
 
         self.device = device or _auto_device()
         self.dtype = torch.float16 if self.device == "cuda" else torch.float32
         self.max_new_tokens = max_new_tokens
-        # MPS에서 beam search(num_beams>1)가 불안정 — greedy로 강제
-        self.num_beams = 1 if self.device == "mps" else num_beams
+        # beam search는 CUDA에서만 안정적 — MPS·CPU는 greedy(num_beams=1)
+        self.num_beams = num_beams if self.device == "cuda" else 1
 
         print(f"[Florence-2] {model_id} 로드 중 (device={self.device}, dtype={self.dtype})...")
 
         # SDPA 가속: CUDA는 float16+SDPA, MPS/CPU는 eager(float32)
         attn_impl = "sdpa" if self.device == "cuda" else "eager"
 
+        # 최신 transformers에서 PretrainedConfig 클래스 속성 forced_bos_token_id가 제거됨.
+        # Florence2LanguageConfig.__init__이 super().__init__() 호출 전에 self.forced_bos_token_id에
+        # 접근하므로 PretrainedConfig 클래스 레벨에 기본값을 복원해야 함.
+        from transformers import PretrainedConfig, AutoConfig
+        if not hasattr(PretrainedConfig, "forced_bos_token_id"):
+            PretrainedConfig.forced_bos_token_id = None
+
+        config = AutoConfig.from_pretrained(model_id, trust_remote_code=True)
+
         try:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_id,
-                torch_dtype=self.dtype,
+                config=config,
+                dtype=self.dtype,
                 attn_implementation=attn_impl,
                 trust_remote_code=True,
             ).eval().to(self.device)
         except Exception:
-            # SDPA 실패 시 eager fallback
+            # attn_implementation 미지원 시 eager fallback
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_id,
-                torch_dtype=self.dtype,
+                config=config,
+                dtype=self.dtype,
                 trust_remote_code=True,
             ).eval().to(self.device)
 

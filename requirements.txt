@@ -14,7 +14,7 @@ pillow-heif>=0.16        # HEIC 지원
 anthropic>=0.107
 
 # Florence-2 (P2)
-transformers>=4.40
+transformers>=4.40,<5.0
 torch>=2.2
 einops
 timm
