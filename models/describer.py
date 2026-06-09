@@ -41,7 +41,8 @@ class Florence2Describer:
         self.device = device or _auto_device()
         self.dtype = torch.float16 if self.device == "cuda" else torch.float32
         self.max_new_tokens = max_new_tokens
-        self.num_beams = num_beams
+        # MPS에서 beam search(num_beams>1)가 불안정 — greedy로 강제
+        self.num_beams = 1 if self.device == "mps" else num_beams
 
         print(f"[Florence-2] {model_id} 로드 중 (device={self.device}, dtype={self.dtype})...")
 
