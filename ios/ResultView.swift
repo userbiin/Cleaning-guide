@@ -184,7 +184,7 @@ private struct ObjectDetailCard: View {
 
             // Florence-2 description (describe=ON path only)
             if let desc = object.description, !desc.isEmpty {
-                Text(""\(desc)"")
+                Text("\u{201C}\(desc)\u{201D}")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .italic()
@@ -302,4 +302,39 @@ private struct GuideSection<Content: View>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(color.opacity(0.07), in: RoundedRectangle(cornerRadius: 12))
     }
+}
+
+// MARK: - Previews
+
+#Preview("전체 결과") {
+    NavigationStack {
+        ResultView(image: PreviewData.sampleImage, response: PreviewData.sampleResponse)
+    }
+}
+
+#Preview("가이드 없음") {
+    let noGuideResponse = AnalyzeResponse(
+        imageId: "preview_002",
+        processedImageSize: [960, 720],
+        summary: "간단한 분석 결과입니다.",
+        objects: Array(PreviewData.sampleObjects.prefix(2)),
+        guide: Guide(priorityTop3: [], fiveMinRoutine: [], byCategory: [:]),
+        annotatedImageUrl: "",
+        latencyMs: 500
+    )
+    return NavigationStack {
+        ResultView(image: PreviewData.sampleImage, response: noGuideResponse)
+    }
+}
+
+#Preview("DecisionBadge - 버릴 것") {
+    DecisionBadge(decision: "discard").padding()
+}
+
+#Preview("DecisionBadge - 제자리") {
+    DecisionBadge(decision: "keep").padding()
+}
+
+#Preview("DecisionBadge - 미정") {
+    DecisionBadge(decision: nil).padding()
 }

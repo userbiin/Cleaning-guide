@@ -1,25 +1,25 @@
 import SwiftUI
 import PhotosUI
 
-// Bundles UIImage + AnalyzeResponse so .sheet(item:) can present both together.
-private struct AnalysisPacket: Identifiable {
-    let id = UUID()
-    let image: UIImage
-    let response: AnalyzeResponse
-}
-
 struct HomeView: View {
-    // Persisted across launches via UserDefaults
+
+    // MARK: - Persistent settings (View에 유지 — @AppStorage는 SwiftUI 전용 래퍼)
     @AppStorage("serverURL")   private var serverURL   = "http://100.x.x.x:8000"
     @AppStorage("useDescribe") private var useDescribe = false
 
-    @State private var pickerItem:  PhotosPickerItem?
-    @State private var selectedImage: UIImage?
-    @State private var isAnalyzing  = false
-    @State private var packet:       AnalysisPacket?    // non-nil → sheet opens
-    @State private var errorMessage: String?
+    // MARK: - State
+    @State private var pickerItem: PhotosPickerItem?
+    @State private var vm: HomeViewModel
+
+    // MARK: - Init (ViewModel 주입 지원 → Preview/테스트에서 Mock 사용 가능)
+    init(viewModel: HomeViewModel = HomeViewModel()) {
+        _vm = State(initialValue: viewModel)
+    }
+
+    // MARK: - Body
 
     var body: some View {
+        @Bindable var vm = vm
         ScrollView {
             VStack(spacing: 24) {
                 headerSection
@@ -31,20 +31,23 @@ struct HomeView: View {
         }
         .navigationTitle("정리 도우미")
         .navigationBarTitleDisplayMode(.large)
-        .sheet(item: $packet) { pkt in
+        .sheet(item: $vm.analysisResult) { result in
             NavigationStack {
-                ResultView(image: pkt.image, response: pkt.response)
+                ResultView(image: result.image, response: result.response)
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
-                            Button("닫기") { packet = nil }
+                            Button("닫기") { vm.analysisResult = nil }
                         }
                     }
             }
         }
-        .alert("오류", isPresented: .constant(errorMessage != nil)) {
-            Button("확인") { errorMessage = nil }
+        .alert("오류", isPresented: Binding(
+            get: { vm.errorMessage != nil },
+            set: { if !$0 { vm.errorMessage = nil } }
+        )) {
+            Button("확인") { vm.errorMessage = nil }
         } message: {
-            Text(errorMessage ?? "")
+            Text(vm.errorMessage ?? "")
         }
     }
 
@@ -70,17 +73,13 @@ struct HomeView: View {
         }
         .padding(.horizontal)
         .onChange(of: pickerItem) { _, item in
-            Task {
-                guard let data = try? await item?.loadTransferable(type: Data.self),
-                      let img  = UIImage(data: data) else { return }
-                await MainActor.run { selectedImage = img }
-            }
+            Task { await vm.loadImage(from: item) }
         }
     }
 
     @ViewBuilder
     private var pickerLabel: some View {
-        if let img = selectedImage {
+        if let img = vm.selectedImage {
             Image(uiImage: img)
                 .resizable()
                 .scaledToFill()
@@ -142,9 +141,11 @@ struct HomeView: View {
     }
 
     private var analyzeButton: some View {
-        Button(action: analyze) {
+        Button {
+            Task { await vm.analyze(serverURL: serverURL, useDescribe: useDescribe) }
+        } label: {
             Group {
-                if isAnalyzing {
+                if vm.isAnalyzing {
                     HStack(spacing: 10) {
                         ProgressView().tint(.white)
                         Text("분석 중…")
@@ -158,37 +159,34 @@ struct HomeView: View {
             .padding(.vertical, 14)
         }
         .buttonStyle(.borderedProminent)
-        .disabled(selectedImage == nil || isAnalyzing)
+        .disabled(!vm.canAnalyze)
         .padding(.horizontal)
     }
+}
 
-    // MARK: - Action
+// MARK: - Previews
 
-    private func analyze() {
-        guard let image = selectedImage else { return }
-        isAnalyzing = true
+#Preview("기본 상태") {
+    NavigationStack {
+        HomeView()
+    }
+}
 
-        let service  = APIService(baseURL: serverURL)
-        let describe = useDescribe
+#Preview("사진 선택됨") {
+    let vm = HomeViewModel(serviceFactory: { _ in MockAPIService() })
+    vm.selectedImage = PreviewData.sampleImage
+    return NavigationStack {
+        HomeView(viewModel: vm)
+    }
+}
 
-        Task {
-            do {
-                let response = try await service.analyze(image: image, describe: describe)
-                await MainActor.run {
-                    packet     = AnalysisPacket(image: image, response: response)
-                    isAnalyzing = false
-                }
-            } catch let urlErr as URLError {
-                await MainActor.run {
-                    errorMessage = "네트워크 오류 (\(urlErr.code.rawValue)). 서버가 실행 중인지 확인하세요."
-                    isAnalyzing  = false
-                }
-            } catch {
-                await MainActor.run {
-                    errorMessage = error.localizedDescription
-                    isAnalyzing  = false
-                }
-            }
-        }
+#Preview("분석 중 (스피너)") {
+    let mock = MockAPIService()
+    mock.delay = .seconds(300) // 완료되지 않아 스피너 유지
+    let vm = HomeViewModel(serviceFactory: { _ in mock })
+    vm.selectedImage = PreviewData.sampleImage
+    vm.isAnalyzing = true
+    return NavigationStack {
+        HomeView(viewModel: vm)
     }
 }

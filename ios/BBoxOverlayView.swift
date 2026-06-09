@@ -38,7 +38,7 @@ struct BBoxOverlayView: View {
                     let pillRect = CGRect(x: rect.minX, y: pillY, width: pillW, height: pillH)
 
                     ctx.fill(
-                        Path(RoundedRect(rect: pillRect, cornerSize: CGSize(width: 4, height: 4))),
+                        Path(roundedRect: pillRect, cornerRadius: 4),
                         with: .color(color)
                     )
                     ctx.draw(
@@ -74,4 +74,23 @@ struct BBoxOverlayView: View {
             height: CGFloat(obj.bbox[3] - obj.bbox[1]) * sy
         )
     }
+}
+
+// MARK: - Preview
+
+#Preview("BBox 오버레이") {
+    // processedSize == displaySize → 1:1 스케일로 bbox 좌표 그대로 렌더링
+    BBoxOverlayView(
+        objects: PreviewData.sampleObjects,
+        displaySize: CGSize(width: 360, height: 270),
+        processedSize: CGSize(width: 960, height: 720),
+        selectedID: .constant(0)
+    )
+    .frame(width: 360, height: 270)
+    .background {
+        Image(uiImage: PreviewData.sampleImage)
+            .resizable()
+            .scaledToFill()
+    }
+    .clipped()
 }

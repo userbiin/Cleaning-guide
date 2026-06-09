@@ -1,6 +1,15 @@
 import Foundation
 import UIKit
 
+// MARK: - Service Protocol
+
+/// 네트워크 계층 추상화 — MockAPIService와 APIService가 준수
+protocol AnalysisService {
+    func analyze(image: UIImage, describe: Bool, detector: String) async throws -> AnalyzeResponse
+}
+
+// MARK: - Errors
+
 enum APIError: LocalizedError {
     case invalidImage
     case server(statusCode: Int, message: String?)
@@ -18,7 +27,7 @@ enum APIError: LocalizedError {
     }
 }
 
-final class APIService {
+final class APIService: AnalysisService {
     private let baseURL: String
     private let session: URLSession
 
