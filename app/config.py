@@ -1,5 +1,8 @@
 import os
 import torch
+from dotenv import load_dotenv
+
+load_dotenv()  # 프로젝트 루트 .env 자동 로드 (환경변수가 이미 있으면 덮어쓰지 않음)
 
 
 MODEL_PATH      = os.getenv("MODEL_PATH",      "yolov8s-world.pt")

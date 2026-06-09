@@ -93,6 +93,7 @@ class Florence2Describer:
                 max_new_tokens=self.max_new_tokens,
                 num_beams=self.num_beams,
                 do_sample=False,
+                use_cache=False,  # DynamicCache(newer transformers)가 past_key_values[0][0]=None 으로 넘겨 발생하는 AttributeError 방지
             )
 
         generated_text = self.processor.batch_decode(

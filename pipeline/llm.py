@@ -79,7 +79,7 @@ def ask_llm(prompt: str) -> dict | None:
 
     response = client.messages.create(
         model=CLAUDE_MODEL,
-        max_tokens=1024,
+        max_tokens=4096,
         temperature=0,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -88,8 +88,10 @@ def ask_llm(prompt: str) -> dict | None:
     # 마크다운 코드블록(```json ... ```) 또는 순수 JSON 모두 처리
     match = re.search(r"\{.*\}", raw, re.DOTALL)
     if not match:
+        print(f"[llm] JSON 파싱 실패 — raw 응답 앞 200자: {raw[:200]}")
         return None
     try:
         return json.loads(match.group())
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        print(f"[llm] JSONDecodeError: {e} — raw 앞 200자: {raw[:200]}")
         return None

@@ -10,6 +10,9 @@ detector + describer(describe=True) 전부 사용.
 import sys
 import glob
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from app.config import CONF_THRESHOLD, DETECTOR_NAME, IMGSZ, MODEL_PATH, auto_device
 from models.detector import get_detector
