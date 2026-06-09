@@ -4,7 +4,7 @@ import PhotosUI
 struct HomeView: View {
 
     // MARK: - Persistent settings (View에 유지 — @AppStorage는 SwiftUI 전용 래퍼)
-    @AppStorage("serverURL")   private var serverURL   = "http://100.x.x.x:8000"
+    @AppStorage("serverURL")   private var serverURL   = "http://100.120.175.117"
     @AppStorage("useDescribe") private var useDescribe = false
 
     // MARK: - State

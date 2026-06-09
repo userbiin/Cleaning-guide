@@ -54,6 +54,7 @@ OUR_TO_COCO: dict[str, str] = {
     "bag":            "handbag",
     "toothbrush":     "toothbrush",
     "monitor":        "tv",      # 근사 매핑 — TV 이미지 포함
+    "mug": "cup",
 }
 
 COCO_EVAL_CLASSES: list[str] = sorted(set(OUR_TO_COCO.values()))
