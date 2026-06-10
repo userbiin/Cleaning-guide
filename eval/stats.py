@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import math
 import sys
+from pathlib import Path
 
 
 # ── Wilson score 비율 신뢰구간 ─────────────────────────────────────────────────
@@ -147,5 +148,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    from pathlib import Path
     main()

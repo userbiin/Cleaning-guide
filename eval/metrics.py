@@ -164,7 +164,7 @@ def detection_metrics_per_image(
     preds: list[dict],
     gt_objs: list[dict],
     iou_thr: float = 0.5,
-    small_area_px: int = SMALL_ABS_PX if False else 96 * 96,
+    small_area_px: int = SMALL_ABS_PX,
 ) -> dict:
     """
     이미지 1장 단위 greedy 매칭 기반 지표.
