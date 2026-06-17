@@ -63,23 +63,41 @@ _OUR_MAPPED: set[str] = set(OUR_TO_COCO.keys())
 
 # ── FiftyOne 데이터셋 로드 ─────────────────────────────────────────────────────
 
-def _load_dataset(detector_name: str, max_samples: int | None) -> "fo.Dataset":
-    dataset_name = f"coco2017_val_orgdet_{detector_name}"
-
-    if dataset_name in fo.list_datasets():
-        print(f"기존 FiftyOne 데이터셋 로드: {dataset_name}")
-        dataset = fo.load_dataset(dataset_name)
+def _load_dataset(
+    detector_name: str,
+    max_samples: int | None,
+    roboflow_dir: Path | None = None,
+) -> "fo.Dataset":
+    if roboflow_dir is not None:
+        dataset_name = f"roboflow_desk_{detector_name}"
+        if dataset_name in fo.list_datasets():
+            print(f"기존 FiftyOne 데이터셋 로드: {dataset_name}")
+            dataset = fo.load_dataset(dataset_name)
+        else:
+            print(f"Roboflow COCO 데이터셋 로드 중: {roboflow_dir}")
+            dataset = fo.Dataset.from_dir(
+                dataset_dir=str(roboflow_dir),
+                dataset_type=fo.types.COCODetectionDataset,
+                label_types=["detections"],
+                dataset_name=dataset_name,
+                persistent=True,
+            )
     else:
-        print("COCO-2017 validation 다운로드/로드 중 (최초 실행 시 시간 소요)...")
-        dataset = foz.load_zoo_dataset(
-            "coco-2017",
-            split="validation",
-            label_types=["detections"],
-            classes=COCO_EVAL_CLASSES,
-            only_matching=True,
-            dataset_name=dataset_name,
-            persistent=True,
-        )
+        dataset_name = f"coco2017_val_orgdet_{detector_name}"
+        if dataset_name in fo.list_datasets():
+            print(f"기존 FiftyOne 데이터셋 로드: {dataset_name}")
+            dataset = fo.load_dataset(dataset_name)
+        else:
+            print("COCO-2017 validation 다운로드/로드 중 (최초 실행 시 시간 소요)...")
+            dataset = foz.load_zoo_dataset(
+                "coco-2017",
+                split="validation",
+                label_types=["detections"],
+                classes=COCO_EVAL_CLASSES,
+                only_matching=True,
+                dataset_name=dataset_name,
+                persistent=True,
+            )
 
     if max_samples and len(dataset) > max_samples:
         dataset = dataset.take(max_samples, seed=42)
@@ -94,6 +112,7 @@ def run_eval(
     max_samples: int | None = None,
     conf: float = 0.08,
     output_dir: Path = Path("outputs/coco_eval"),
+    roboflow_dir: Path | None = None,
 ) -> None:
     if not FIFTYONE_AVAILABLE:
         print("[ERROR] fiftyone 미설치. 설치: pip install fiftyone")
@@ -101,7 +120,7 @@ def run_eval(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = _load_dataset(detector_name, max_samples)
+    dataset = _load_dataset(detector_name, max_samples, roboflow_dir)
     n_samples = len(dataset)
     print(f"평가 이미지 수: {n_samples}  |  평가 클래스: {len(COCO_EVAL_CLASSES)}개")
 
@@ -243,8 +262,13 @@ def main() -> None:
                    help="탐지 confidence threshold (기본: 0.08)")
     p.add_argument("--output", default="outputs/coco_eval",
                    help="결과 저장 디렉터리 (기본: outputs/coco_eval)")
+    p.add_argument("--roboflow-dir", default=None,
+                   help="Roboflow COCO 데이터셋 경로 (예: eval/data/roboflow_desk/valid)")
     args = p.parse_args()
-    run_eval(args.detector, args.max_samples, args.conf, Path(args.output))
+    run_eval(
+        args.detector, args.max_samples, args.conf, Path(args.output),
+        Path(args.roboflow_dir) if args.roboflow_dir else None,
+    )
 
 
 if __name__ == "__main__":
