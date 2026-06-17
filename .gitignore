@@ -28,11 +28,20 @@ env/
 .DS_Store
 Thumbs.db
 
-# Model weights (use Git LFS or store externally)
-# *.pt
-# *.pth
-# *.onnx
-# weights/
+# Model weights
+*.pt
+*.pth
+*.onnx
 
-# Output/results (uncomment if you don't want to track)
-# outputs/
+# Dataset images
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+
+# Dataset directories
+datasets/
+eval/data/
+outputs/
+runs/
