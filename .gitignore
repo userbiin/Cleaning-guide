@@ -35,7 +35,9 @@ Thumbs.db
 # weights/
 
 # Datasets, eval data, outputs — large files, not tracked in git
-datasets/
+datasets/merged/images/
+datasets/merged/labels/
+datasets/merged/verify/
 eval/data/
 outputs/
 runs/

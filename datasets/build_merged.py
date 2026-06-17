@@ -9,8 +9,10 @@ Working Desk + LVIS 통합 파인튜닝 데이터셋 빌드 — datasets/build_m
 """
 
 import argparse
+import os
 import random
 import shutil
+import stat
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -355,17 +357,18 @@ def verify(stats: dict) -> None:
         lines.append(f"    최다: {max_c[0]} ({max_c[1]:,}개)  최소: {min_c[0]} ({min_c[1]:,}개)")
         lines.append(f"    불균형 비율: {ratio:.1f}x")
         if ratio > 10:
-            lines.append(f"    ⚠️  불균형 심각 (>10x) — 오버샘플링 또는 가중치 조정 권장")
+            lines.append(f"    [!] 불균형 심각 (>10x) -- 오버샘플링 또는 가중치 조정 권장")
         elif ratio > 5:
-            lines.append(f"    ⚠️  불균형 주의 (>5x)")
+            lines.append(f"    [!] 불균형 주의 (>5x)")
         else:
-            lines.append(f"    ✓  균형 양호")
+            lines.append(f"    [OK] 균형 양호")
     else:
         lines.append("    데이터 없음")
 
     lines.append(SEP)
     summary = "\n".join(lines)
-    print(summary)
+    enc = sys.stdout.encoding or "utf-8"
+    print(summary.encode(enc, errors="replace").decode(enc))
 
     # 검증 이미지 저장
     verify_dir = MERGED_DIR / "verify"
@@ -422,11 +425,15 @@ def main() -> None:
                    help="기존 merged 디렉터리 초기화 후 재빌드")
     args = p.parse_args()
 
+    def _rm_readonly(func, path, exc):
+        os.chmod(path, stat.S_IWRITE)
+        func(path)
+
     # 출력 디렉터리 초기화 (--rebuild 시 기존 파일 제거)
     for sub in ("images/train", "images/val", "labels/train", "labels/val"):
         d = MERGED_DIR / sub
         if args.rebuild and d.exists():
-            shutil.rmtree(d)
+            shutil.rmtree(d, onexc=_rm_readonly)
         d.mkdir(parents=True, exist_ok=True)
 
     print(f"통합 클래스 ({len(UNIFIED_CLASSES)}개): {UNIFIED_CLASSES}")
