@@ -46,9 +46,7 @@ class Florence2Describer:
 
         print(f"[Florence-2] {model_id} 로드 중 (device={self.device}, dtype={self.dtype})...")
 
-        # SDPA 가속: CUDA는 float16+SDPA, MPS/CPU는 eager(float32)
-        attn_impl = "sdpa" if self.device == "cuda" else "eager"
-
+        # Florence-2 커스텀 모델은 _supports_sdpa 속성이 없어 sdpa 불가 → eager 고정
         # 최신 transformers에서 PretrainedConfig 클래스 속성 forced_bos_token_id가 제거됨.
         # Florence2LanguageConfig.__init__이 super().__init__() 호출 전에 self.forced_bos_token_id에
         # 접근하므로 PretrainedConfig 클래스 레벨에 기본값을 복원해야 함.
@@ -58,22 +56,13 @@ class Florence2Describer:
 
         config = AutoConfig.from_pretrained(model_id, trust_remote_code=True)
 
-        try:
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_id,
-                config=config,
-                dtype=self.dtype,
-                attn_implementation=attn_impl,
-                trust_remote_code=True,
-            ).eval().to(self.device)
-        except Exception:
-            # attn_implementation 미지원 시 eager fallback
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_id,
-                config=config,
-                dtype=self.dtype,
-                trust_remote_code=True,
-            ).eval().to(self.device)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_id,
+            config=config,
+            torch_dtype=self.dtype,
+            attn_implementation="eager",
+            trust_remote_code=True,
+        ).eval().to(self.device)
 
         self.processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
         print("[Florence-2] 로드 완료")
