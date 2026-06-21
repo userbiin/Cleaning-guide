@@ -17,6 +17,18 @@ from pathlib import Path
 
 _SKIP_LABELS = {"none", "None", ""}
 
+# Roboflow 라벨 → OBJECT_CLASSES 라벨 매핑 (대소문자·이름 불일치 보정)
+# None 값: 해당 라벨은 변환 후 제거 (매핑 불가 multi-label 등)
+LABEL_MAP: dict[str, str | None] = {
+    "Laptop":                        "laptop",
+    "Mobilephone":                   "phone",
+    "Notebook":                      "notebook",
+    "Paper":                         "paper",
+    "Pen":                           "pen",
+    "Headphone":                     "earphones",
+    "Notebook-pen-mobilephone-laptop-": None,   # multi-label → 제거
+}
+
 
 def convert(split_dir: Path, out_dir: Path) -> None:
     anno_path = split_dir / "_annotations.coco.json"
@@ -34,16 +46,27 @@ def convert(split_dir: Path, out_dir: Path) -> None:
     img = {i["id"]: i for i in coco["images"]}
 
     by_img: dict[int, list[dict]] = defaultdict(list)
+    skipped = 0
     for a in coco["annotations"]:
-        label = cat.get(a["category_id"])
-        if label is None:
+        raw_label = cat.get(a["category_id"])
+        if raw_label is None:
             continue
+        # LABEL_MAP 적용: 매핑된 라벨 사용, None이면 제거, 없으면 소문자 그대로 시도
+        if raw_label in LABEL_MAP:
+            label = LABEL_MAP[raw_label]
+            if label is None:
+                skipped += 1
+                continue
+        else:
+            label = raw_label.lower()
         x, y, w, h = a["bbox"]
         by_img[a["image_id"]].append({
             "label": label,
             "bbox": [round(x), round(y), round(x + w), round(y + h)],
-            "decision": None,   # detection recall 계산엔 불필요; 나중에 채워도 됨
+            "decision": None,
         })
+    if skipped:
+        print(f"  매핑 불가 라벨 제거: {skipped}개")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     written = 0

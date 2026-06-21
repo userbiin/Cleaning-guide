@@ -1,0 +1,875 @@
+(base) subin@Subinui-MacBookAir CV % python detector_eval.py
+
+====================================================================
+  도메인 Zero-shot Detector 평가
+  테스트 이미지: 22장
+  GT 객체 수:    785개
+  탐지기:        yolo-world, yoloe, florence-drc
+  conf=0.08  iou=0.5
+====================================================================
+
+[yolo-world] 로딩... OK
+[yoloe] 로딩... FAIL ([Errno 2] No such file or directory: 'yoloe-11s.pt')
+[florence-drc] 로딩... [Florence-DRC] microsoft/Florence-2-base 로드 중 (device=mps)... `torch_dtype` is deprecated! Use `dtype` instead!
+OK
+
+====================================================================
+  PART 1: Zero-shot Detector 비교
+  탐지기: yolo-world, florence-drc
+  이미지: 22장  |  IoU threshold: 0.5
+====================================================================
+
+[추론 중...]
+The following generation flags are not valid and may be ignored: ['early_stopping']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_  GT= 40  |  yolo-world=44  florence-drc=2
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_  GT= 32  |  yolo-world=39  florence-drc=3
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv  GT= 25  |  yolo-world=18  florence-drc=17
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz  GT= 36  |  yolo-world=27  florence-drc=9
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR  GT=  6  |  yolo-world=19  florence-drc=5
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL  GT= 42  |  yolo-world=46  florence-drc=3
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN  GT= 34  |  yolo-world=26  florence-drc=20
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX  GT= 24  |  yolo-world=23  florence-drc=11
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd  GT= 19  |  yolo-world=36  florence-drc=6
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp  GT= 29  |  yolo-world=21  florence-drc=7
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj  GT= 24  |  yolo-world=25  florence-drc=10
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk  GT= 32  |  yolo-world=43  florence-drc=15
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv  GT= 51  |  yolo-world=24  florence-drc=18
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6  GT= 61  |  yolo-world=37  florence-drc=36
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT  GT= 24  |  yolo-world=28  florence-drc=9
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE  GT= 18  |  yolo-world=35  florence-drc=10
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB  GT= 73  |  yolo-world=43  florence-drc=15
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4  GT= 83  |  yolo-world=53  florence-drc=8
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z  GT= 12  |  yolo-world=17  florence-drc=11
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7  GT= 74  |  yolo-world=36  florence-drc=18
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES.  GT= 26  |  yolo-world=37  florence-drc=1
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601.  GT= 20  |  yolo-world=39  florence-drc=3
+
+--------------------------------------------------------------------
+  탐지기별 종합 지표 (IoU@0.50)
+--------------------------------------------------------------------
+
+[yolo-world]
+  Recall     (탐지율)  : 38.3%   (301 / 785 GT 객체)
+  Precision            : 42.0%   (301 / 716 예측)
+  F1                   : 40.1%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=301  FP=415  FN=484
+  mAP@0.5        : 0.2447
+  mAP@0.5:0.95   : 0.1819
+  small_mAP@0.5  : 0.1236
+
+[florence-drc]
+  Recall     (탐지율)  : 21.1%   (166 / 785 GT 객체)
+  Precision            : 70.0%   (166 / 237 예측)
+  F1                   : 32.5%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=166  FP=71  FN=619
+  mAP@0.5        : 0.1230
+  mAP@0.5:0.95   : 0.1044
+  small_mAP@0.5  : 0.0738
+
+--------------------------------------------------------------------
+  >> mAP@0.5 기준 추천 base detector: [yolo-world]  mAP@0.5=0.2447  mAP@0.5:0.95=0.1819
+--------------------------------------------------------------------
+
+====================================================================
+  PART 2: YOLO-World + Florence-DRC 앙상블 (추가 실험)
+  [앙상블 방식] Union after NMS(IoU=0.50)
+  [목적] Florence-DRC가 YOLO-World 누락 객체를 보완하는지 확인
+====================================================================
+
+이미지                                          GT   YW   FL   앙상블  YW_rec  ENS_rec
+---------------------------------------------------------------------------
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_    40   44    2    28   45.0%   42.5%
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_    32   39    3    24   43.8%   43.8%
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv    25   18   17    26   28.0%   52.0%
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz    36   27    9    18   36.1%   36.1%
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR     6   19    5    15  100.0%  100.0%
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL    42   46    3    28   40.5%   35.7%
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN    34   26   20    25   32.4%   38.2%
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX    24   23   11    20   41.7%   50.0%
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd    19   36    6    22   63.2%   63.2%
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp    29   21    7    17   44.8%   37.9%
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj    24   25   10    22   29.2%   45.8%
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk    32   43   15    28   56.2%   56.2%
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv    51   24   18    26   37.3%   41.2%
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6    61   37   36    43   26.2%   50.8%
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT    24   28    9    22   25.0%   29.2%
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE    18   35   10    25   50.0%   50.0%
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB    73   43   15    37   32.9%   32.9%
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4    83   53    8    36   33.7%   32.5%
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z    12   17   11    13   83.3%   91.7%
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7    74   36   18    32   29.7%   32.4%
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES     26   37    1    23   53.8%   50.0%
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601     20   39    3    27   35.0%   35.0%
+
+--------------------------------------------------------------------
+  지표                        YOLO-World 단독           앙상블        변화
+--------------------------------------------------------------------
+  Recall (탐지율)                     38.3%        41.9%    +3.6%
+  Precision                        42.0%        59.1%    +17.0%
+  TP                                  301           329    +28
+  FP                                  415           228    -187
+  FN                                  484           456    -28
+--------------------------------------------------------------------
+  Florence-DRC 기여 TP   : 35개
+  이미지 탐지율 변화     : 22/22 → 22/22
+--------------------------------------------------------------------
+  >> 앙상블이 YOLO-World 대비 Recall 3.6%p 향상
+
+====================================================================
+  평가 완료
+====================================================================
+(base) subin@Subinui-MacBookAir CV % python detector_eval.py --detectors yolo-world yoloe florence-drc
+
+====================================================================
+  도메인 Zero-shot Detector 평가
+  테스트 이미지: 22장
+  GT 객체 수:    785개
+  탐지기:        yolo-world, yoloe, florence-drc
+  conf=0.08  iou=0.5
+====================================================================
+
+[yolo-world] 로딩... OK
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 11% ━────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 29% ━━━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 38% ━━━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 52% ━━━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 66% ━━━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 75% ━━━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 90% ━━━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-11s-seg.pt to 'yoloe-11s-seg.pt': 100% ━━━━━━━━━━━━ 26.5MB 28.0MB/s 0.9s
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 1% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 1% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 2% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 2% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 3% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 3% ────────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 4% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 5% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 5% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 6% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 7% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 7% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 8% ╸───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 8% ━───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 9% ━───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 9% ━───────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 10% ━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 10% ━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 11% ━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 12% ━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 12% ━──────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 13% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 14% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 14% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 15% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 15% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 16% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 16% ━╸─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 17% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 17% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 18% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 19% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 19% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 20% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 21% ━━─────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 21% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 22% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 22% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 23% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 23% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 24% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 24% ━━╸────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 25% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 26% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 26% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 27% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 28% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 28% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 29% ━━━────
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 29% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 30% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 30% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 31% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 31% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 32% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 33% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 33% ━━━╸───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 34% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 35% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 35% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 36% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 36% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 37% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 37% ━━━━───
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 38% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 38% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 39% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 40% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 40% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 41% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 41% ━━━━╸──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 42% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 43% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 43% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 44% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 44% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 45% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 45% ━━━━━──
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 46% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 47% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 47% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 47% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 48% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 48% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 49% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 49% ━━━━━╸─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 50% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 51% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 51% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 51% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 52% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 52% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 53% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 54% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 54% ━━━━━━─
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 54% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 55% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 55% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 56% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 57% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 57% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 58% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 58% ━━━━━━╸
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 59% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 59% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 60% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 61% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 61% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 62% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 62% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 63% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 64% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 64% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 65% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 65% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 66% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 66% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 66% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 67% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 68% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 68% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 69% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 70% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 70% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 71% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 71% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 72% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 72% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 73% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 73% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 73% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 74% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 75% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 75% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 75% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 76% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 76% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 77% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 77% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 78% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 78% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 79% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 79% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 80% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 80% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 81% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 82% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 82% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 83% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 84% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 84% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 85% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 85% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 86% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 86% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 87% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 87% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 88% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 89% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 89% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 90% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 90% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 91% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 92% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 92% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 93% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 93% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 94% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 94% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 95% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 96% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 96% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 97% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 97% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 98% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 99% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 99% ━━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 100% ━━━━━━
+Downloading https://github.com/ultralytics/assets/releases/download/v8.4.0/mobileclip_blt.ts to 'mobileclip_blt.ts': 100% ━━━━━━━━━━━━ 572.0MB 17.2MB/s 33.3s
+OK
+[florence-drc] 로딩... [Florence-DRC] microsoft/Florence-2-base 로드 중 (device=mps)... `torch_dtype` is deprecated! Use `dtype` instead!
+OK
+
+====================================================================
+  PART 1: Zero-shot Detector 비교
+  탐지기: yolo-world, yoloe, florence-drc
+  이미지: 22장  |  IoU threshold: 0.5
+====================================================================
+
+[추론 중...]
+The following generation flags are not valid and may be ignored: ['early_stopping']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_  GT= 40  |  yolo-world=44  yoloe=38  florence-drc=2
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_  GT= 32  |  yolo-world=39  yoloe=23  florence-drc=3
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv  GT= 25  |  yolo-world=18  yoloe=31  florence-drc=17
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz  GT= 36  |  yolo-world=27  yoloe=27  florence-drc=9
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR  GT=  6  |  yolo-world=19  yoloe=15  florence-drc=5
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL  GT= 42  |  yolo-world=46  yoloe=46  florence-drc=3
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN  GT= 34  |  yolo-world=26  yoloe=20  florence-drc=20
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX  GT= 24  |  yolo-world=23  yoloe=20  florence-drc=11
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd  GT= 19  |  yolo-world=36  yoloe=29  florence-drc=6
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp  GT= 29  |  yolo-world=21  yoloe=23  florence-drc=7
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj  GT= 24  |  yolo-world=25  yoloe=22  florence-drc=10
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk  GT= 32  |  yolo-world=43  yoloe=27  florence-drc=15
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv  GT= 51  |  yolo-world=24  yoloe=28  florence-drc=18
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6  GT= 61  |  yolo-world=37  yoloe=31  florence-drc=36
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT  GT= 24  |  yolo-world=28  yoloe=27  florence-drc=9
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE  GT= 18  |  yolo-world=35  yoloe=28  florence-drc=10
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB  GT= 73  |  yolo-world=43  yoloe=50  florence-drc=15
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4  GT= 83  |  yolo-world=53  yoloe=48  florence-drc=8
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z  GT= 12  |  yolo-world=17  yoloe=16  florence-drc=11
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7  GT= 74  |  yolo-world=36  yoloe=51  florence-drc=18
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES.  GT= 26  |  yolo-world=37  yoloe=22  florence-drc=1
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601.  GT= 20  |  yolo-world=39  yoloe=19  florence-drc=3
+
+--------------------------------------------------------------------
+  탐지기별 종합 지표 (IoU@0.50)
+--------------------------------------------------------------------
+
+[yolo-world]
+  Recall     (탐지율)  : 38.3%   (301 / 785 GT 객체)
+  Precision            : 42.0%   (301 / 716 예측)
+  F1                   : 40.1%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=301  FP=415  FN=484
+  mAP@0.5        : 0.2447
+  mAP@0.5:0.95   : 0.1819
+  small_mAP@0.5  : 0.1236
+
+  [yolo-world] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229    68   161    12   29.7%
+  cable                     86    11    75    21   12.8%
+  book                      85    24    61    20   28.2%
+  pen                       68    13    55    14   19.1%
+  box                       39    16    23    31   41.0%
+  bottle                    15     3    12     0   20.0%
+  charger                   19     9    10     6   47.4%
+  folder                    12     4     8     5   33.3%
+  cup                       30    23     7    13   76.7%
+  snack                     12     5     7     0   41.7%
+  document                  13     6     7     9   46.2%
+  tape                       6     0     6    16    0.0%  ← 전혀 미탐지
+  trash                     12     6     6     0   50.0%
+  toy                        7     2     5     5   28.6%
+  case                      11     7     4     2   63.6%
+  lamp                       4     1     3     3   25.0%
+  pencil case                4     1     3     5   25.0%
+  phone                     15    12     3     7   80.0%
+  blanket                    5     2     3     7   40.0%
+  mouse                     12    10     2     8   83.3%
+  tissue                     5     3     2    14   60.0%
+  eraser                     2     0     2    15    0.0%  ← 전혀 미탐지
+  memo                       4     2     2     0   50.0%
+  wallet                     3     1     2     0   33.3%
+  headset                    2     0     2    12    0.0%  ← 전혀 미탐지
+  medicine                   4     2     2     0   50.0%
+  camera                     3     2     1     3   66.7%
+  speaker                   15    14     1    12   93.3%
+  pouch                      5     4     1     2   80.0%
+  keyboard                   8     7     1    11   87.5%
+  printer                    2     1     1    23   50.0%
+  mouse pad                  2     1     1    11   50.0%
+  mask                       4     3     1     2   75.0%
+  earphones                  6     5     1    25   83.3%
+  monitor                   17    16     1    11   94.1%
+  sunglasses                 1     0     1     0    0.0%  ← 전혀 미탐지
+  cd                         2     1     1     3   50.0%
+  calculator                 1     1     0    30  100.0%
+  hair brush                 2     2     0     2  100.0%
+  kettle                     1     1     0     0  100.0%
+  calendar                   1     1     0    19  100.0%
+  laptop                     8     8     0    28  100.0%
+  remote controller          2     2     0     7  100.0%
+  can                        1     1     0     1  100.0%
+
+[yoloe]
+  Recall     (탐지율)  : 44.2%   (347 / 785 GT 객체)
+  Precision            : 54.1%   (347 / 641 예측)
+  F1                   : 48.7%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=347  FP=294  FN=438
+  mAP@0.5        : 0.1671
+  mAP@0.5:0.95   : 0.1377
+  small_mAP@0.5  : 0.0926
+
+  [yoloe] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229    83   146     2   36.2%
+  cable                     86    10    76     0   11.6%
+  book                      85    34    51    41   40.0%
+  pen                       68    19    49    44   27.9%
+  box                       39    21    18    12   53.8%
+  charger                   19     6    13     4   31.6%
+  folder                    12     2    10     0   16.7%
+  bottle                    15     6     9     0   40.0%
+  trash                     12     5     7     2   41.7%
+  cup                       30    25     5    13   83.3%
+  document                  13     8     5     9   61.5%
+  phone                     15    11     4    13   73.3%
+  tape                       6     2     4     3   33.3%
+  case                      11     7     4     0   63.6%
+  snack                     12     8     4     1   66.7%
+  lamp                       4     1     3     7   25.0%
+  memo                       4     1     3     3   25.0%
+  blanket                    5     2     3     1   40.0%
+  tissue                     5     2     3     3   40.0%
+  pencil case                4     2     2     0   50.0%
+  eraser                     2     0     2     0    0.0%  ← 전혀 미탐지
+  wallet                     3     1     2     0   33.3%
+  headset                    2     0     2    14    0.0%  ← 전혀 미탐지
+  medicine                   4     2     2     0   50.0%
+  camera                     3     2     1     1   66.7%
+  speaker                   15    14     1    16   93.3%
+  hair brush                 2     1     1     1   50.0%
+  mask                       4     3     1     0   75.0%
+  earphones                  6     5     1    12   83.3%
+  monitor                   17    16     1     6   94.1%
+  pouch                      5     4     1     6   80.0%
+  toy                        7     6     1    21   85.7%
+  mouse                     12    11     1    13   91.7%
+  keyboard                   8     7     1     6   87.5%
+  cd                         2     1     1     0   50.0%
+  laptop                     8     8     0     5  100.0%
+  remote controller          2     2     0     2  100.0%
+  printer                    2     2     0    11  100.0%
+  calculator                 1     1     0     2  100.0%
+  mouse pad                  2     2     0     3  100.0%
+  kettle                     1     1     0     0  100.0%
+  can                        1     1     0     7  100.0%
+  calendar                   1     1     0    10  100.0%
+  sunglasses                 1     1     0     0  100.0%
+
+[florence-drc]
+  Recall     (탐지율)  : 21.1%   (166 / 785 GT 객체)
+  Precision            : 70.0%   (166 / 237 예측)
+  F1                   : 32.5%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=166  FP=71  FN=619
+  mAP@0.5        : 0.1230
+  mAP@0.5:0.95   : 0.1044
+  small_mAP@0.5  : 0.0738
+
+  [florence-drc] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229    10   219     4    4.4%
+  cable                     86     0    86     0    0.0%  ← 전혀 미탐지
+  pen                       68    13    55     2   19.1%
+  book                      85    45    40    22   52.9%
+  box                       39     6    33     2   15.4%
+  charger                   19     1    18     0    5.3%
+  cup                       30    14    16     1   46.7%
+  bottle                    15     1    14     0    6.7%
+  trash                     12     1    11     0    8.3%
+  snack                     12     1    11     0    8.3%
+  document                  13     3    10     0   23.1%
+  case                      11     1    10     0    9.1%
+  folder                    12     3     9     0   25.0%
+  phone                     15     8     7     4   53.3%
+  toy                        7     0     7     0    0.0%  ← 전혀 미탐지
+  tape                       6     0     6     0    0.0%  ← 전혀 미탐지
+  pouch                      5     0     5     0    0.0%  ← 전혀 미탐지
+  blanket                    5     0     5     0    0.0%  ← 전혀 미탐지
+  speaker                   15    11     4     5   73.3%
+  pencil case                4     0     4     0    0.0%  ← 전혀 미탐지
+  memo                       4     0     4     0    0.0%  ← 전혀 미탐지
+  mask                       4     0     4     0    0.0%  ← 전혀 미탐지
+  earphones                  6     2     4     0   33.3%
+  monitor                   17    13     4     2   76.5%
+  tissue                     5     1     4     0   20.0%
+  medicine                   4     0     4     0    0.0%  ← 전혀 미탐지
+  lamp                       4     1     3     3   25.0%
+  wallet                     3     0     3     0    0.0%  ← 전혀 미탐지
+  camera                     3     1     2     1   33.3%
+  remote controller          2     0     2     0    0.0%  ← 전혀 미탐지
+  eraser                     2     0     2     0    0.0%  ← 전혀 미탐지
+  hair brush                 2     0     2     0    0.0%  ← 전혀 미탐지
+  mouse                     12    10     2     7   83.3%
+  headset                    2     0     2     0    0.0%  ← 전혀 미탐지
+  cd                         2     0     2     0    0.0%  ← 전혀 미탐지
+  laptop                     8     7     1     6   87.5%
+  printer                    2     1     1     3   50.0%
+  mouse pad                  2     1     1     0   50.0%
+  calendar                   1     0     1     0    0.0%  ← 전혀 미탐지
+  sunglasses                 1     0     1     0    0.0%  ← 전혀 미탐지
+  calculator                 1     1     0     1  100.0%
+  kettle                     1     1     0     0  100.0%
+  can                        1     1     0     0  100.0%
+  keyboard                   8     8     0     8  100.0%
+
+--------------------------------------------------------------------
+  >> mAP@0.5 기준 추천 base detector: [yolo-world]  mAP@0.5=0.2447  mAP@0.5:0.95=0.1819
+--------------------------------------------------------------------
+
+====================================================================
+  PART 2: YOLO-World + Florence-DRC 앙상블 (추가 실험)
+  [앙상블 방식] Union after NMS(IoU=0.50)
+  [목적] Florence-DRC가 YOLO-World 누락 객체를 보완하는지 확인
+====================================================================
+
+이미지                                          GT   YW   FL   앙상블  YW_rec  ENS_rec
+---------------------------------------------------------------------------
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_    40   44    2    28   45.0%   42.5%
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_    32   39    3    24   43.8%   43.8%
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv    25   18   17    26   28.0%   52.0%
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz    36   27    9    18   36.1%   36.1%
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR     6   19    5    15  100.0%  100.0%
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL    42   46    3    28   40.5%   35.7%
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN    34   26   20    25   32.4%   38.2%
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX    24   23   11    20   41.7%   50.0%
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd    19   36    6    22   63.2%   63.2%
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp    29   21    7    17   44.8%   37.9%
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj    24   25   10    22   29.2%   45.8%
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk    32   43   15    28   56.2%   56.2%
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv    51   24   18    26   37.3%   41.2%
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6    61   37   36    43   26.2%   50.8%
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT    24   28    9    22   25.0%   29.2%
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE    18   35   10    25   50.0%   50.0%
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB    73   43   15    37   32.9%   32.9%
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4    83   53    8    36   33.7%   32.5%
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z    12   17   11    13   83.3%   91.7%
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7    74   36   18    32   29.7%   32.4%
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES     26   37    1    23   53.8%   50.0%
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601     20   39    3    27   35.0%   35.0%
+
+--------------------------------------------------------------------
+  지표                        YOLO-World 단독           앙상블        변화
+--------------------------------------------------------------------
+  Recall (탐지율)                     38.3%        41.9%    +3.6%
+  Precision                        42.0%        59.1%    +17.0%
+  TP                                  301           329    +28
+  FP                                  415           228    -187
+  FN                                  484           456    -28
+--------------------------------------------------------------------
+  Florence-DRC 기여 TP   : 35개
+  이미지 탐지율 변화     : 22/22 → 22/22
+--------------------------------------------------------------------
+  >> 앙상블이 YOLO-World 대비 Recall 3.6%p 향상
+
+====================================================================
+  평가 완료
+====================================================================
+(base) subin@Subinui-MacBookAir CV % 
+
+
+
+코드 수정 
+
+/Library/Developer/CommandLineTools/usr/bin/python3 /Users/subin/Desktop/CV/detector_eval.py
+(base) subin@Subinui-MacBookAir CV % /Library/Developer/CommandLineTools/usr/bin/python3 /Users/subin/Desktop/C
+V/detector_eval.py
+Traceback (most recent call last):
+  File "/Users/subin/Desktop/CV/detector_eval.py", line 25, in <module>
+    import cv2
+ModuleNotFoundError: No module named 'cv2'
+(base) subin@Subinui-MacBookAir CV % python detector_eval.py --detectors yolo-world yoloe florence-drc
+
+====================================================================
+  도메인 Zero-shot Detector 평가
+  테스트 이미지: 22장
+  GT 객체 수:    785개
+  탐지기:        yolo-world, yoloe, florence-drc
+  conf=0.08  iou=0.5
+====================================================================
+
+[yolo-world] 로딩... OK
+[yoloe] 로딩... OK
+[florence-drc] 로딩... [Florence-DRC] microsoft/Florence-2-base 로드 중 (device=mps)... `torch_dtype` is deprecated! Use `dtype` instead!
+OK
+
+====================================================================
+  PART 1: Zero-shot Detector 비교
+  탐지기: yolo-world, yoloe, florence-drc
+  이미지: 22장  |  IoU threshold: 0.5
+====================================================================
+
+[추론 중...]
+The following generation flags are not valid and may be ignored: ['early_stopping']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_  GT= 40  |  yolo-world=44  yoloe=38  florence-drc=2
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_  GT= 32  |  yolo-world=39  yoloe=23  florence-drc=3
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv  GT= 25  |  yolo-world=18  yoloe=31  florence-drc=17
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz  GT= 36  |  yolo-world=27  yoloe=27  florence-drc=9
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR  GT=  6  |  yolo-world=19  yoloe=15  florence-drc=5
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL  GT= 42  |  yolo-world=46  yoloe=46  florence-drc=3
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN  GT= 34  |  yolo-world=26  yoloe=20  florence-drc=20
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX  GT= 24  |  yolo-world=23  yoloe=20  florence-drc=11
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd  GT= 19  |  yolo-world=36  yoloe=29  florence-drc=6
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp  GT= 29  |  yolo-world=21  yoloe=23  florence-drc=7
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj  GT= 24  |  yolo-world=25  yoloe=22  florence-drc=10
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk  GT= 32  |  yolo-world=43  yoloe=27  florence-drc=15
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv  GT= 51  |  yolo-world=24  yoloe=28  florence-drc=18
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6  GT= 61  |  yolo-world=37  yoloe=31  florence-drc=36
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT  GT= 24  |  yolo-world=28  yoloe=27  florence-drc=9
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE  GT= 18  |  yolo-world=35  yoloe=28  florence-drc=10
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB  GT= 73  |  yolo-world=43  yoloe=50  florence-drc=15
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4  GT= 83  |  yolo-world=53  yoloe=48  florence-drc=8
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z  GT= 12  |  yolo-world=17  yoloe=16  florence-drc=11
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7  GT= 74  |  yolo-world=36  yoloe=51  florence-drc=18
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES.  GT= 26  |  yolo-world=37  yoloe=22  florence-drc=1
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601.  GT= 20  |  yolo-world=39  yoloe=19  florence-drc=3
+
+--------------------------------------------------------------------
+  탐지기별 종합 지표 (IoU@0.50)
+--------------------------------------------------------------------
+
+[yolo-world]
+  Recall     (탐지율)  : 20.1%   (158 / 785 GT 객체)
+  Precision            : 22.1%   (158 / 716 예측)
+  F1                   : 21.1%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=158  FP=558  FN=627
+  mAP@0.5        : 0.2447
+  mAP@0.5:0.95   : 0.1819
+  small_mAP@0.5  : 0.1236
+
+  [yolo-world] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229    19   210    11    8.3%
+  cable                     86     4    82    20    4.7%
+  book                      85    15    70    39   17.6%
+  pen                       68    12    56    15   17.6%
+  box                       39     7    32    36   17.9%
+  charger                   19     0    19     6    0.0%  ← 전혀 미탐지
+  bottle                    15     0    15     0    0.0%  ← 전혀 미탐지
+  document                  13     0    13    12    0.0%  ← 전혀 미탐지
+  trash                     12     0    12     0    0.0%  ← 전혀 미탐지
+  snack                     12     0    12     0    0.0%  ← 전혀 미탐지
+  case                      11     0    11     2    0.0%  ← 전혀 미탐지
+  folder                    12     1    11     6    8.3%
+  cup                       30    21     9    19   70.0%
+  phone                     15     7     8     5   46.7%
+  tape                       6     0     6    21    0.0%  ← 전혀 미탐지
+  toy                        7     2     5     7   28.6%
+  memo                       4     0     4     0    0.0%  ← 전혀 미탐지
+  mouse                     12     8     4    11   66.7%
+  pouch                      5     1     4     3   20.0%
+  mask                       4     0     4     2    0.0%  ← 전혀 미탐지
+  earphones                  6     2     4    34   33.3%
+  blanket                    5     1     4     6   20.0%
+  medicine                   4     0     4     0    0.0%  ← 전혀 미탐지
+  tissue                     5     1     4    22   20.0%
+  wallet                     3     0     3     0    0.0%  ← 전혀 미탐지
+  pencil case                4     1     3    13   25.0%
+  lamp                       4     1     3     4   25.0%
+  eraser                     2     0     2    23    0.0%  ← 전혀 미탐지
+  camera                     3     1     2     6   33.3%
+  cd                         2     0     2     3    0.0%  ← 전혀 미탐지
+  speaker                   15    13     2    18   86.7%
+  keyboard                   8     7     1    12   87.5%
+  sunglasses                 1     0     1     0    0.0%  ← 전혀 미탐지
+  headset                    2     1     1    13   50.0%
+  calendar                   1     0     1    27    0.0%  ← 전혀 미탐지
+  monitor                   17    16     1    14   94.1%
+  mouse pad                  2     1     1    13   50.0%
+  printer                    2     1     1    28   50.0%
+  laptop                     8     8     0    53  100.0%
+  calculator                 1     1     0    42  100.0%
+  remote controller          2     2     0     9  100.0%
+  hair brush                 2     2     0     2  100.0%
+  kettle                     1     1     0     0  100.0%
+  can                        1     1     0     1  100.0%
+
+[yoloe]
+  Recall     (탐지율)  : 20.6%   (162 / 785 GT 객체)
+  Precision            : 25.3%   (162 / 641 예측)
+  F1                   : 22.7%
+  이미지 탐지율        : 100.0%   (22 / 22 이미지)
+  TP=162  FP=479  FN=623
+  mAP@0.5        : 0.1671
+  mAP@0.5:0.95   : 0.1377
+  small_mAP@0.5  : 0.0926
+
+  [yoloe] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229     8   221     3    3.5%
+  cable                     86     0    86     0    0.0%  ← 전혀 미탐지
+  book                      85    27    58   108   31.8%
+  pen                       68    18    50    50   26.5%
+  box                       39    10    29    18   25.6%
+  charger                   19     0    19     6    0.0%  ← 전혀 미탐지
+  bottle                    15     0    15     0    0.0%  ← 전혀 미탐지
+  phone                     15     3    12    18   20.0%
+  trash                     12     0    12     2    0.0%  ← 전혀 미탐지
+  folder                    12     0    12     0    0.0%  ← 전혀 미탐지
+  case                      11     0    11     0    0.0%  ← 전혀 미탐지
+  document                  13     3    10    30   23.1%
+  snack                     12     3     9     3   25.0%
+  cup                       30    23     7    27   76.7%
+  earphones                  6     0     6    14    0.0%  ← 전혀 미탐지
+  tape                       6     0     6     3    0.0%  ← 전혀 미탐지
+  blanket                    5     0     5     1    0.0%  ← 전혀 미탐지
+  tissue                     5     0     5     5    0.0%  ← 전혀 미탐지
+  laptop                     8     4     4    11   50.0%
+  pencil case                4     0     4     0    0.0%  ← 전혀 미탐지
+  mask                       4     0     4     0    0.0%  ← 전혀 미탐지
+  medicine                   4     0     4     0    0.0%  ← 전혀 미탐지
+  pouch                      5     2     3     9   40.0%
+  memo                       4     1     3     4   25.0%
+  wallet                     3     0     3     0    0.0%  ← 전혀 미탐지
+  lamp                       4     1     3    10   25.0%
+  eraser                     2     0     2     0    0.0%  ← 전혀 미탐지
+  mouse                     12    10     2    19   83.3%
+  remote controller          2     0     2     3    0.0%  ← 전혀 미탐지
+  cd                         2     0     2     0    0.0%  ← 전혀 미탐지
+  hair brush                 2     0     2     3    0.0%  ← 전혀 미탐지
+  calculator                 1     0     1     5    0.0%  ← 전혀 미탐지
+  headset                    2     1     1    19   50.0%
+  camera                     3     2     1     1   66.7%
+  calendar                   1     0     1    14    0.0%  ← 전혀 미탐지
+  monitor                   17    16     1     8   94.1%
+  mouse pad                  2     1     1     6   50.0%
+  kettle                     1     0     1     0    0.0%  ← 전혀 미탐지
+  keyboard                   8     7     1    11   87.5%
+  speaker                   15    14     1    21   93.3%
+  toy                        7     6     1    26   85.7%
+  sunglasses                 1     0     1     0    0.0%  ← 전혀 미탐지
+  can                        1     0     1     7    0.0%  ← 전혀 미탐지
+  printer                    2     2     0    14  100.0%
+
+[florence-drc]
+  Recall     (탐지율)  : 17.3%   (136 / 785 GT 객체)
+  Precision            : 57.4%   (136 / 237 예측)
+  F1                   : 26.6%
+  이미지 탐지율        : 95.5%   (21 / 22 이미지)
+  TP=136  FP=101  FN=649
+  mAP@0.5        : 0.1230
+  mAP@0.5:0.95   : 0.1044
+  small_mAP@0.5  : 0.0738
+
+  [florence-drc] 클래스별 탐지 현황 (FN 많은 순)
+  클래스                       GT    TP    FN    FP  Recall
+  ------------------------------------------------------
+  paper                    229     3   226     8    1.3%
+  cable                     86     0    86     1    0.0%  ← 전혀 미탐지
+  pen                       68    12    56     3   17.6%
+  book                      85    48    37    29   56.5%
+  box                       39     3    36     5    7.7%
+  charger                   19     0    19     0    0.0%  ← 전혀 미탐지
+  cup                       30    14    16     1   46.7%
+  bottle                    15     0    15     0    0.0%  ← 전혀 미탐지
+  document                  13     0    13     0    0.0%  ← 전혀 미탐지
+  trash                     12     0    12     0    0.0%  ← 전혀 미탐지
+  folder                    12     0    12     0    0.0%  ← 전혀 미탐지
+  snack                     12     0    12     0    0.0%  ← 전혀 미탐지
+  case                      11     0    11     0    0.0%  ← 전혀 미탐지
+  speaker                   15     5    10     5   33.3%
+  phone                     15     8     7    11   53.3%
+  toy                        7     0     7     0    0.0%  ← 전혀 미탐지
+  earphones                  6     0     6     0    0.0%  ← 전혀 미탐지
+  tape                       6     0     6     0    0.0%  ← 전혀 미탐지
+  pouch                      5     0     5     0    0.0%  ← 전혀 미탐지
+  blanket                    5     0     5     0    0.0%  ← 전혀 미탐지
+  tissue                     5     0     5     0    0.0%  ← 전혀 미탐지
+  memo                       4     0     4     0    0.0%  ← 전혀 미탐지
+  pencil case                4     0     4     0    0.0%  ← 전혀 미탐지
+  mask                       4     0     4     0    0.0%  ← 전혀 미탐지
+  monitor                   17    13     4     3   76.5%
+  medicine                   4     0     4     0    0.0%  ← 전혀 미탐지
+  wallet                     3     0     3     0    0.0%  ← 전혀 미탐지
+  lamp                       4     1     3     3   25.0%
+  eraser                     2     0     2     0    0.0%  ← 전혀 미탐지
+  headset                    2     0     2     0    0.0%  ← 전혀 미탐지
+  mouse                     12    10     2    10   83.3%
+  camera                     3     1     2     1   33.3%
+  remote controller          2     0     2     0    0.0%  ← 전혀 미탐지
+  cd                         2     0     2     0    0.0%  ← 전혀 미탐지
+  hair brush                 2     0     2     0    0.0%  ← 전혀 미탐지
+  mouse pad                  2     0     2     0    0.0%  ← 전혀 미탐지
+  laptop                     8     7     1     7   87.5%
+  calendar                   1     0     1     0    0.0%  ← 전혀 미탐지
+  kettle                     1     0     1     0    0.0%  ← 전혀 미탐지
+  sunglasses                 1     0     1     0    0.0%  ← 전혀 미탐지
+  printer                    2     1     1     3   50.0%
+  calculator                 1     1     0     1  100.0%
+  keyboard                   8     8     0     8  100.0%
+  can                        1     1     0     2  100.0%
+
+--------------------------------------------------------------------
+  >> mAP@0.5 기준 추천 base detector: [yolo-world]  mAP@0.5=0.2447  mAP@0.5:0.95=0.1819
+--------------------------------------------------------------------
+
+====================================================================
+  PART 2: YOLO-World + Florence-DRC 앙상블 (추가 실험)
+  [앙상블 방식] Union after NMS(IoU=0.50)
+  [목적] Florence-DRC가 YOLO-World 누락 객체를 보완하는지 확인
+====================================================================
+
+이미지                                          GT   YW   FL   앙상블  YW_rec  ENS_rec
+---------------------------------------------------------------------------
+  KakaoTalk_Photo_2026-06-09-22-39-41 001_    40   44    2    28   17.5%    7.5%
+  KakaoTalk_Photo_2026-06-09-22-39-42 002_    32   39    3    24   18.8%   15.6%
+  suggested-0KUvN1WcIsZ2dttLZjUw_jpg.rf.Zv    25   18   17    26   12.0%   28.0%
+  suggested-76lfnkTc2dcgj6eNsawj_jpg.rf.Jz    36   27    9    18   13.9%   16.7%
+  suggested-7Jjkj4pqPwq3f5big5hC_jpg.rf.oR     6   19    5    15   50.0%   50.0%
+  suggested-ABtq5iKeq4E8LrJmnK25_jpg.rf.VL    42   46    3    28   23.8%   19.0%
+  suggested-PsbQ5FV0yelkLehECg0d_jpg.rf.mN    34   26   20    25   17.6%   26.5%
+  suggested-at9z70Z0FrIVnfQ67uJD_jpg.rf.YX    24   23   11    20   29.2%   41.7%
+  suggested-cjsOD4Tv3aTbszxmhB03_jpg.rf.Gd    19   36    6    22   36.8%   31.6%
+  suggested-e0L12d7mGMy7o8DkLL2k_jpg.rf.tp    29   21    7    17    6.9%   10.3%
+  suggested-eZuJVmbHMc1OyJWASdtm_jpg.rf.bj    24   25   10    22    8.3%   33.3%
+  suggested-i6Njt8laAs1uMAfRlhak_jpg.rf.kk    32   43   15    28   34.4%   37.5%
+  suggested-lX3dAQj8JMDfBh25mjhj_jpg.rf.Vv    51   24   18    26   25.5%   25.5%
+  suggested-nYcye7ATIQiDb4Ld4Scx_jpg.rf.c6    61   37   36    43   13.1%   41.0%
+  suggested-nd39OYOGm10W1VkY17zw_jpg.rf.tT    24   28    9    22   25.0%   29.2%
+  suggested-qq5ew9oFOf0Vo6LDz6QU_jpg.rf.jE    18   35   10    25   33.3%   27.8%
+  suggested-rcEjUl7hou9Vds0dSUTl_jpg.rf.FB    73   43   15    37   17.8%   20.5%
+  suggested-sKZzMRvw0X7qgZGvOU6Z_jpg.rf.J4    83   53    8    36   15.7%   14.5%
+  suggested-vnLmnkpaBuBwvKkHZitQ_jpg.rf.7z    12   17   11    13   83.3%   83.3%
+  suggested-yZ5UEeHzpcBa6C6Ns1kz_jpg.rf.f7    74   36   18    32   16.2%   23.0%
+  test1 copy_jpeg.rf.R1N1mcWNTnLqOku2C3ES     26   37    1    23   15.4%    7.7%
+  test3 copy_jpeg.rf.H6P4U07j6dL2MGjin601     20   39    3    27   20.0%   20.0%
+
+--------------------------------------------------------------------
+  지표                        YOLO-World 단독           앙상블        변화
+--------------------------------------------------------------------
+  Recall (탐지율)                     20.1%        24.2%    +4.1%
+  Precision                        22.1%        34.1%    +12.0%
+  TP                                  158           190    +32
+  FP                                  558           367    -191
+  FN                                  627           595    -32
+--------------------------------------------------------------------
+  Florence-DRC 기여 TP   : 44개
+  이미지 탐지율 변화     : 22/22 → 22/22
+--------------------------------------------------------------------
+  >> 앙상블이 YOLO-World 대비 Recall 4.1%p 향상
+
+====================================================================
+  평가 완료
+====================================================================
+(base) subin@Subinui-MacBookAir CV % 

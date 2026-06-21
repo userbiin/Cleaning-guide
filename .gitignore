@@ -28,11 +28,12 @@ env/
 .DS_Store
 Thumbs.db
 
-# Model weights (use Git LFS or store externally)
-# *.pt
-# *.pth
-# *.onnx
-# weights/
+# Model weights (large binaries — use Git LFS or store externally)
+*.pt
+*.pth
+*.onnx
+*.ts
+weights/
 
 # Datasets, eval data, outputs — large files, not tracked in git
 datasets/merged/images/
@@ -41,9 +42,6 @@ datasets/merged/verify/
 eval/data/
 outputs/
 runs/
-
-# Model weights
-yolo26n.pt
 
 # Image files
 *.jpg

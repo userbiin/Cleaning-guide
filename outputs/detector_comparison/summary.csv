@@ -1,0 +1,2 @@
+﻿detector,recall,precision,small_recall,tp,fp,fn
+yolo-world,1.0,0.226,,2.4,8.2,0.0

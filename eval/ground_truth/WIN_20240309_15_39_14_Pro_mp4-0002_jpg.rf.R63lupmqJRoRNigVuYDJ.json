@@ -1,0 +1,38 @@
+{
+  "image_id": "WIN_20240309_15_39_14_Pro_mp4-0002_jpg.rf.R63lupmqJRoRNigVuYDJ",
+  "objects": [
+    {
+      "id": 0,
+      "label": "notebook",
+      "bbox": [
+        4,
+        24,
+        774,
+        720
+      ],
+      "decision": null
+    },
+    {
+      "id": 1,
+      "label": "phone",
+      "bbox": [
+        750,
+        236,
+        1174,
+        658
+      ],
+      "decision": null
+    },
+    {
+      "id": 2,
+      "label": "pen",
+      "bbox": [
+        118,
+        400,
+        528,
+        550
+      ],
+      "decision": null
+    }
+  ]
+}

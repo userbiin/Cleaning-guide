@@ -19,7 +19,7 @@ Roboflow Student Desk 데이터셋 다운로드 — 한 번만 실행.
 
 from roboflow import Roboflow
 
-rf = Roboflow(api_key="VNcRZqzR7TsOrkoZOIMm")
+rf = Roboflow(api_key="zIxJV6SbJmYDUKZQ94Z7")
 project = rf.workspace("subins-workspace-ylfzq").project("Student Desk")
 dataset = project.version(1).download("coco")
 print(f"다운로드 완료: {dataset.location}")

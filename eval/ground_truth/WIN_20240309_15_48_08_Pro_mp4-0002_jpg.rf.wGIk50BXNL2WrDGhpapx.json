@@ -1,0 +1,27 @@
+{
+  "image_id": "WIN_20240309_15_48_08_Pro_mp4-0002_jpg.rf.wGIk50BXNL2WrDGhpapx",
+  "objects": [
+    {
+      "id": 0,
+      "label": "phone",
+      "bbox": [
+        324,
+        226,
+        786,
+        484
+      ],
+      "decision": null
+    },
+    {
+      "id": 1,
+      "label": "pen",
+      "bbox": [
+        528,
+        284,
+        820,
+        470
+      ],
+      "decision": null
+    }
+  ]
+}

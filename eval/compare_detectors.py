@@ -24,6 +24,7 @@ GT JSON 형식 (eval/ground_truth/<stem>.json):
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -41,6 +42,18 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".heic", ".webp"}
 
 # COCO 기준 "소형" = 이미지 면적의 0.5% 이하
 SMALL_OBJ_RATIO = 0.005
+
+# ── 라벨 정규화 ───────────────────────────────────────────────────────────────
+_SYNONYM: dict[str, str] = {
+    "mobilephone": "phone", "cellphone": "phone",
+    "notebook":    "laptop",
+    "mug":         "cup",
+}
+
+def norm(label: str) -> str:
+    """공백·언더스코어 제거 후 소문자화 → 동의어 치환. GT·예측 양쪽에 적용."""
+    s = re.sub(r"[\s_]+", "", label.strip().lower())
+    return _SYNONYM.get(s, label.strip().lower())
 
 
 # ── IoU / matching ────────────────────────────────────────────────────────────
@@ -133,7 +146,9 @@ def run_comparison(image_dir: Path, detector_names: list[str],
         for gf in gt_dir.glob("*.json"):
             with open(gf, encoding="utf-8") as f:
                 data = json.load(f)
-            gt_map[gf.stem] = data.get("objects", [])
+            gt_map[gf.stem] = [
+                {**o, "label": norm(o["label"])} for o in data.get("objects", [])
+            ]
         print(f"GT 파일: {len(gt_map)}개 로드")
     else:
         print("GT 없음 → 정성적(시각) 비교 모드")
@@ -172,7 +187,9 @@ def run_comparison(image_dir: Path, detector_names: list[str],
             all_gts_acc[img_path.stem] = gt_objs  # invalid 제외 버전 저장
 
         for det_name, detector in detectors.items():
-            preds = detector.detect(str(img_path))
+            preds = [
+                {**p, "label": norm(p["label"])} for p in detector.detect(str(img_path))
+            ]
             all_preds_acc[det_name][img_path.stem] = preds  # mAP용 축적
 
             _annotate(

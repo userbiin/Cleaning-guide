@@ -1,0 +1,60 @@
+{
+  "image_id": "WIN_20240309_15_40_49_Pro_mp4-0000_jpg.rf.LoUc9gkX6qKtIwjHs9kr",
+  "objects": [
+    {
+      "id": 0,
+      "label": "notebook",
+      "bbox": [
+        0,
+        392,
+        758,
+        720
+      ],
+      "decision": null
+    },
+    {
+      "id": 1,
+      "label": "notebook",
+      "bbox": [
+        6,
+        234,
+        608,
+        412
+      ],
+      "decision": null
+    },
+    {
+      "id": 2,
+      "label": "phone",
+      "bbox": [
+        636,
+        226,
+        840,
+        326
+      ],
+      "decision": null
+    },
+    {
+      "id": 3,
+      "label": "pen",
+      "bbox": [
+        246,
+        276,
+        496,
+        306
+      ],
+      "decision": null
+    },
+    {
+      "id": 4,
+      "label": "laptop",
+      "bbox": [
+        542,
+        328,
+        1280,
+        720
+      ],
+      "decision": null
+    }
+  ]
+}

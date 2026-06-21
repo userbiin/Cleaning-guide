@@ -16,6 +16,8 @@ from collections import defaultdict
 
 import numpy as np
 
+SMALL_ABS_PX = 96 * 96  # 소형 객체 기준: 이미지 크기 정보 없을 때 fallback (≈ 96² px)
+
 # ── IoU ────────────────────────────────────────────────────────────────────────
 
 def iou(a: list[int], b: list[int]) -> float:
@@ -102,9 +104,6 @@ def compute_map(
     # 클래스별 pred/gt 수집
     pred_cls: dict[str, list] = defaultdict(list)
     gt_cls:   dict[str, list] = defaultdict(list)
-    # 소형 객체 GT (image_area 필요 → image_id별 size를 별도 주입하기 어려우므로 bbox 절대 크기 기준)
-    # 소형 = bbox 면적 < 이미지 면적 * ratio → 이미지 크기를 모를 때는 COCO 절대 기준(32²=1024) fallback
-    SMALL_ABS_PX = 96 * 96  # 이미지 크기 정보 없을 때 fallback (≈ 96² px)
     gt_small_cls: dict[str, list] = defaultdict(list)
 
     for img_id, preds in all_preds.items():

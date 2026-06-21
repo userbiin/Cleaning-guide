@@ -1,0 +1,16 @@
+{
+  "image_id": "WIN_20240309_15_47_58_Pro_mp4-0000_jpg.rf.O6SJq9QjuwRqAh4Z53RO",
+  "objects": [
+    {
+      "id": 0,
+      "label": "pen",
+      "bbox": [
+        518,
+        290,
+        806,
+        464
+      ],
+      "decision": null
+    }
+  ]
+}

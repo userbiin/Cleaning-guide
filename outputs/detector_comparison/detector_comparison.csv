@@ -1,4 +1,6 @@
-﻿image,detector,pred_count
-test1.jpeg,yolo-world,48
-test2.jpeg,yolo-world,19
-test3.jpeg,yolo-world,46
+﻿image,detector,pred_count,gt_count,tp,fp,fn,recall,precision,small_gt,small_recall
+WIN_20240309_15_39_14_Pro_mp4-0002_jpg.rf.R63lupmqJRoRNigVuYDJ.jpg,yolo-world,7,3,3,4,0,1.0,0.429,0,
+WIN_20240309_15_40_49_Pro_mp4-0000_jpg.rf.LoUc9gkX6qKtIwjHs9kr.jpg,yolo-world,18,5,5,13,0,1.0,0.278,0,
+WIN_20240309_15_47_58_Pro_mp4-0000_jpg.rf.O6SJq9QjuwRqAh4Z53RO.jpg,yolo-world,8,1,1,7,0,1.0,0.125,0,
+WIN_20240309_15_48_08_Pro_mp4-0002_jpg.rf.wGIk50BXNL2WrDGhpapx.jpg,yolo-world,10,2,2,8,0,1.0,0.2,0,
+WIN_20240310_11_25_45_Pro_mp4-0002_jpg.rf.4dKJK9VDFkMWUJaR3Ahs.jpg,yolo-world,10,1,1,9,0,1.0,0.1,0,

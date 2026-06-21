@@ -1,0 +1,16 @@
+{
+  "image_id": "WIN_20240310_11_25_45_Pro_mp4-0002_jpg.rf.4dKJK9VDFkMWUJaR3Ahs",
+  "objects": [
+    {
+      "id": 0,
+      "label": "laptop",
+      "bbox": [
+        196,
+        92,
+        1196,
+        720
+      ],
+      "decision": null
+    }
+  ]
+}

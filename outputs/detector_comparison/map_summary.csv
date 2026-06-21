@@ -1,0 +1,2 @@
+﻿detector,mAP@0.5,mAP@0.5:0.95,small_mAP@0.5
+yolo-world,0.0664,0.0547,0.0
