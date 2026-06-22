@@ -10,7 +10,7 @@ DETECTOR_NAME   = os.getenv("DETECTOR",        "yolo-world")
 CONF_THRESHOLD  = float(os.getenv("CONF",      "0.08"))
 IMGSZ           = int(os.getenv("IMGSZ",       "960"))
 STATIC_DIR      = os.getenv("STATIC_DIR",      "outputs/static")
-CLAUDE_MODEL    = os.getenv("CLAUDE_MODEL",    "claude-haiku-4-5-20251001")
+CLAUDE_MODEL    = os.getenv("CLAUDE_MODEL",    "claude-sonnet-4-6")
 
 
 def auto_device() -> str:

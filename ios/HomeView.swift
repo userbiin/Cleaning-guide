@@ -16,7 +16,7 @@ private extension Color {
 struct HomeView: View {
 
     // MARK: - Persistent settings
-    @AppStorage("serverURL")   private var serverURL   = "http://100.120.175.117"
+    @AppStorage("serverURL")   private var serverURL   = "http://192.168.0.12:8000"
     @AppStorage("useDescribe") private var useDescribe = false
 
     // MARK: - State
@@ -56,27 +56,11 @@ struct HomeView: View {
                     analyzeButton
                     settingsCard
                 }
-                .padding(.top, 8)
                 .padding(.bottom, 48)
             }
         }
         .preferredColorScheme(.dark)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color.appBackground, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 6) {
-                    Image(systemName: "sparkles")
-                        .font(.caption.bold())
-                        .foregroundStyle(Color.neonMint)
-                    Text("정리 도우미")
-                        .font(.headline.bold())
-                        .foregroundStyle(Color.labelPrimary)
-                }
-            }
-        }
+        .navigationBarHidden(true)
         .sheet(item: $vm.analysisResult) { result in
             NavigationStack {
                 ResultView(image: result.image, response: result.response)
@@ -106,21 +90,28 @@ struct HomeView: View {
 
     private var headerSection: some View {
         VStack(spacing: 14) {
+            // App label row — replaces the floating nav bar
+            HStack(spacing: 6) {
+                Image(systemName: "sparkles")
+                    .font(.caption.bold())
+                    .foregroundStyle(Color.neonMint)
+                Text("정리 도우미")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(Color.labelSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             ZStack {
-                // Outer glow ring
                 Circle()
                     .fill(Color.neonMint.opacity(0.08))
                     .frame(width: 116, height: 116)
-                // Inner ring
                 Circle()
                     .fill(Color.neonMint.opacity(0.14))
                     .frame(width: 90, height: 90)
-                // Icon
                 Image(systemName: "sparkles.rectangle.stack.fill")
                     .font(.system(size: 38, weight: .medium))
                     .foregroundStyle(Color.neonMint)
             }
-            .padding(.top, 12)
             .shadow(color: Color.neonMint.opacity(0.4), radius: 20, x: 0, y: 0)
 
             VStack(spacing: 5) {
@@ -134,6 +125,7 @@ struct HomeView: View {
             }
         }
         .padding(.horizontal)
+        .padding(.top, 8)
     }
 
     // MARK: - Image Picker
@@ -220,7 +212,7 @@ struct HomeView: View {
                             Text("사진 선택하기")
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(Color.labelPrimary)
-                            Text("갤러리에서 이미지를 가져옵니다")
+                            Text("갤러리에서 이미지 가져오기")
                                 .font(.caption)
                                 .foregroundStyle(Color.labelSecondary)
                         }
@@ -259,7 +251,7 @@ struct HomeView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "wand.and.sparkles")
                             .font(.headline)
-                        Text("AI로 분석 시작")
+                        Text("분석 시작")
                             .font(.headline)
                     }
                 }
@@ -298,7 +290,7 @@ struct HomeView: View {
                 withAnimation(.spring(duration: 0.3)) { showSettings.toggle() }
             } label: {
                 HStack {
-                    Label("서버 및 모델 설정", systemImage: "gearshape.fill")
+                    Label("모델 설정", systemImage: "gearshape.fill")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Color.labelPrimary)
                     Spacer()
@@ -316,77 +308,59 @@ struct HomeView: View {
                     .background(Color.cardBorder)
                     .padding(.horizontal)
 
-                VStack(alignment: .leading, spacing: 14) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Label("서버 주소", systemImage: "server.rack")
-                            .font(.caption.bold())
-                            .foregroundStyle(Color.labelSecondary)
-
-                        HStack(spacing: 8) {
-                            TextField("https://xxxx-8000.app.github.dev", text: Binding(
-                                get: { serverURL },
-                                set: { serverURL = $0 }
-                            ))
-                            .textFieldStyle(.plain)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .keyboardType(.URL)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("서버 URL")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Color.labelPrimary)
+                    TextField("http://192.168.x.x:8000", text: $serverURL)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(Color.labelPrimary)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.URL)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(Color.appBackground, in: RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(Color.cardBorder, lineWidth: 1)
+                        )
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(vm.serverStatus.dotColor)
+                            .frame(width: 7, height: 7)
+                        Text(vm.serverStatus.label)
                             .font(.caption)
-                            .foregroundStyle(Color.labelPrimary)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 8)
-                            .background(Color.black.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .strokeBorder(Color.cardBorder, lineWidth: 1)
-                            )
-
-                            Button {
-                                Task { await vm.checkHealth(serverURL: serverURL) }
-                            } label: {
-                                Image(systemName: "antenna.radiowaves.left.and.right")
-                                    .font(.body)
-                                    .frame(width: 38, height: 34)
-                                    .background(vm.serverStatus.dotColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .strokeBorder(vm.serverStatus.dotColor.opacity(0.5), lineWidth: 1)
-                                    )
-                            }
-                            .foregroundStyle(vm.serverStatus.dotColor)
+                            .foregroundStyle(Color.labelSecondary)
+                        Spacer()
+                        Button("연결 확인") {
+                            Task { await vm.checkHealth(serverURL: serverURL) }
                         }
-
-                        HStack(spacing: 5) {
-                            if case .checking = vm.serverStatus {
-                                ProgressView().scaleEffect(0.65).tint(Color.neonMint)
-                            } else {
-                                Circle()
-                                    .fill(vm.serverStatus.dotColor)
-                                    .frame(width: 6, height: 6)
-                            }
-                            Text(vm.serverStatus.label)
-                                .font(.caption2)
-                                .foregroundStyle(Color.labelSecondary)
-                        }
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(Color.neonMint)
                     }
-
-                    Divider().background(Color.cardBorder)
-
-                    Toggle(isOn: Binding(
-                        get: { useDescribe },
-                        set: { useDescribe = $0 }
-                    )) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Florence-2 Describe")
-                                .font(.subheadline.weight(.medium))
-                                .foregroundStyle(Color.labelPrimary)
-                            Text("속성 서술 포함 (느림) / 빠른 탐지만 (기본)")
-                                .font(.caption)
-                                .foregroundStyle(Color.labelSecondary)
-                        }
-                    }
-                    .tint(Color.neonMint)
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+
+                Divider()
+                    .background(Color.cardBorder)
+                    .padding(.horizontal)
+
+                Toggle(isOn: Binding(
+                    get: { useDescribe },
+                    set: { useDescribe = $0 }
+                )) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Florence-2 Describe")
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(Color.labelPrimary)
+                        Text("속성 서술 포함 (느림)")
+                            .font(.caption)
+                            .foregroundStyle(Color.labelSecondary)
+                    }
+                }
+                .tint(Color.neonMint)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
                 .transition(.opacity.combined(with: .move(edge: .top)))
